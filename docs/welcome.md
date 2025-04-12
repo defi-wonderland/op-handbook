@@ -1,6 +1,6 @@
 ---
 id: welcome
-title: Welcome to OP Handbook
+title: Welcome
 sidebar_label: Welcome
 ---
 

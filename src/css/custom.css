@@ -625,3 +625,12 @@ article {
     grid-column: 1;
   }
 }
+
+/* Hide last updated timestamp */
+.theme-last-updated {
+  display: none !important;
+}
+
+.theme-edit-this-page {
+  display: none !important;
+}
