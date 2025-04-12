@@ -9,6 +9,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'stack/overview',
         'stack/previous-knowledge',
+        'stack/op-stack',
       ],
     },
     {
