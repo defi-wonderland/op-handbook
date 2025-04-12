@@ -8,6 +8,7 @@ const sidebars: SidebarsConfig = {
       label: 'Stack',
       items: [
         'stack/overview',
+        'stack/previous-knowledge',
       ],
     },
     {
