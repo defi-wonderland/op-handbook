@@ -104,10 +104,31 @@ body {
   color: var(--op-dark);
 }
 
-/* Main content background */
-#__docusaurus {
-  min-height: 100vh;
+/* Main content layout */
+.main-wrapper {
   background: transparent;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  background: transparent;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content area */
+article {
+  background: transparent;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-doc-markdown {
+  flex: 1 0 auto;
 }
 
 /* Typography */
@@ -198,20 +219,6 @@ b {
 
 .markdown {
   font-weight: 300;
-}
-
-/* Main content background */
-main {
-  background: transparent;
-}
-
-.main-wrapper {
-  background: transparent;
-}
-
-/* Content area */
-article {
-  background: transparent;
 }
 
 /* Override any white backgrounds */
@@ -320,6 +327,7 @@ article {
 
 .menu {
   background: var(--op-dark) !important;
+  padding: 0;
 }
 
 /* Make all menu links consistent */
@@ -331,8 +339,13 @@ article {
   will-change: color, transform;
   transition: color var(--ifm-transition-fast) ease, transform var(--ifm-transition-slow) ease;
   position: relative;
-  padding-left: 1rem;
+  padding: 0.35rem 1rem;
   border-radius: 0;
+}
+
+.menu__list {
+  margin: 0;
+  padding: 0;
 }
 
 .menu__list .menu__link:hover {
