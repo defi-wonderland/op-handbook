@@ -494,6 +494,29 @@ b {
   transition: color 0.2s ease, background-size 0.2s ease-in;
 }
 
+/* Details and Summary styling */
+.markdown details,
+.theme-doc-markdown details {
+  border: 1px solid var(--wonderland-lila);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: rgba(163, 113, 206, 0.05);
+}
+
+.markdown summary,
+.theme-doc-markdown summary {
+  color: var(--wonderland-lila);
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.markdown summary:hover,
+.theme-doc-markdown summary:hover {
+  opacity: 0.8;
+}
+
 /* Code blocks */
 .theme-code-block {
   background-color: var(--op-light) !important;
