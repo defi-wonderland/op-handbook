@@ -16,6 +16,8 @@
   --op-red-light: #ff1a34;
   --op-red-lighter: #ff263f;
   --op-red-lightest: #ff475d;
+  --wonderland-dark: #0E152C;
+  --wonderland-lila: #a371ce;
 
   /* Theme Colors */
   --ifm-color-primary: var(--op-red);
@@ -100,8 +102,13 @@ body {
 }
 
 ::selection {
-  background: var(--op-red);
-  color: var(--op-dark);
+  background: var(--wonderland-lila);
+  color: var(--wonderland-dark);
+}
+
+::-moz-selection {
+  background: var(--wonderland-lila);
+  color: var(--wonderland-dark);
 }
 
 /* Main content layout */
