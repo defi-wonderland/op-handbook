@@ -54,9 +54,10 @@ const config: Config = {
     navbar: {
       title: '',
       logo: {
-        alt: 'Wonderland Logo',
+        alt: 'OP Handbook',
         src: 'img/logo.svg',
         srcDark: 'img/logo.svg',
+        className: 'navbar-logo-center',
       },
       items: [],
       hideOnScroll: false,

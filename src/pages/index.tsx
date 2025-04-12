@@ -8,7 +8,7 @@ const categories = [
   {
     title: 'STACK',
     icon: '/img/specialization.svg',
-    href: '/docs/specialization/overview',
+    href: '/docs/stack/overview',
   },
   {
     title: 'INTEROP',
@@ -43,7 +43,7 @@ function Home(): React.ReactElement {
            New to Optimism? This handbook is your guide through all the things you need to know before you get started. Cheers!
           </p>
           <div className={styles.buttonContainer}>
-            <Link to="/docs/intro/welcome" className={styles.buttonLink}>
+            <Link to="/docs/welcome" className={styles.buttonLink}>
               <img src="/img/buttons/button.svg" alt="Get Started" className={styles.buttonImage} />
             </Link>
           </div>

@@ -14,7 +14,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   padding: 2rem 0;
-  background: url('/static/img/bg/optimism-handbook.png') center top/cover no-repeat;
+  background: url('/img/bg/optimism-handbook.png') center top/cover no-repeat;
   background-attachment: fixed;
 }
 
@@ -44,16 +44,17 @@
 }
 
 .description {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-weight: 400;
-  font-size: 1.125rem;
+  font-family: 'Sharp Grotesk', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  font-size: 1.25rem;
   line-height: 1.6;
   text-align: center;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.9);
   max-width: 800px;
-  margin: 0 auto;
+  margin: 2rem auto;
   padding: 0 2rem;
-  opacity: 0.9;
+  animation: fadeIn 1s ease-out 0.3s forwards;
+  opacity: 0;
 }
 
 .buttonContainer {
@@ -70,8 +71,9 @@
 }
 
 .buttonLink:hover {
-  filter: drop-shadow(0 0 20px rgba(31, 85, 213, 0.3))
-         drop-shadow(0 0 15px rgba(233, 91, 155, 0.3));
+  filter: drop-shadow(0 0 20px rgba(255, 4, 32, 0.3))
+         drop-shadow(0 0 15px rgba(255, 4, 32, 0.3));
+  transform: translateY(-2px);
 }
 
 .buttonImage {
@@ -89,12 +91,14 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   gap: 2rem;
   width: 100%;
-  margin-top: 1.5rem;
+  margin-top: 3rem;
   padding: 0 2rem;
   margin-bottom: 2rem;
+  animation: fadeIn 1s ease-out 0.7s forwards;
+  opacity: 0;
 }
 
 .categoryCard {
@@ -102,12 +106,12 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  padding: 2rem 4rem;
+  padding: 2rem;
   display: flex;
-  flex: 0 0 270px;
+  flex: 1 1 200px;
+  max-width: 300px;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
   transition: all 0.3s ease;
   text-decoration: none !important;
   position: relative;
@@ -123,8 +127,8 @@
   height: 4px;
   background: linear-gradient(
     89.99deg,
-    #E95B9B 30%,
-    #FECC40 100%
+    var(--ifm-color-primary) 0%,
+    var(--ifm-color-primary-light) 100%
   );
   transform: scaleX(0);
   transform-origin: left;
@@ -136,11 +140,12 @@
 }
 
 .categoryCard:hover {
-  transform: translateY(-4px) scale(1.02);
+  transform: translateY(-4px);
   box-shadow: 
-    0 4px 30px rgba(31, 85, 213, 0.2),
-    0 0 20px rgba(233, 91, 155, 0.2);
+    0 4px 30px rgba(255, 4, 32, 0.2),
+    0 0 20px rgba(255, 4, 32, 0.2);
   border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(14, 21, 44, 0.8);
 }
 
 .categoryIcon {
@@ -161,9 +166,8 @@
   font-family: 'Sharp Grotesk', system-ui, -apple-system, sans-serif;
   font-weight: 300;
   font-style: italic;
-  font-size: 2.5rem;
-  line-height: 0.7;
-  padding-top: 0.15em;
+  font-size: 2rem;
+  line-height: 1;
   color: #ffffff;
   margin: 0;
   text-transform: uppercase;
@@ -181,8 +185,26 @@
 .categoryCard:hover .categoryTitle {
   text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
   letter-spacing: 0.08em;
+  color: var(--ifm-color-primary-lighter);
 }
 
+
+/* Navbar styling */
+.navbar {
+  background: rgba(14, 21, 44, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
+  height: auto;
+}
+
+/* Center logo */
+.navbar__inner {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 0.5rem 0;
+}
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -196,43 +218,47 @@
 
 @media (max-width: 1440px) {
   .categoryCard {
-    flex: 1 0 40%;
+    flex: 1 1 240px;
   }
 }
 
 @media (max-width: 1024px) {
   .main {
     padding: 1rem 0;
-    min-height: 100vh;
-    height: auto;
+    background-position: center;
+    background-size: cover;
   }
 
   .centerContent {
-    gap: 0.75rem;
-    margin-bottom: 2rem;
-    padding-bottom: 6rem;
+    padding-bottom: 2rem;
   }
 
   .categoryCard {
-    flex: 0 0 100%;
+    padding: 1.5rem;
   }
 
   .description {
-    font-size: 1rem;
-    max-width: 80%;
+    font-size: 1.1rem;
+    margin: 1.5rem auto;
   }
 }
 
 @media (max-width: 480px) {
   .categoryCards {
-    padding: 0 0.75rem;
+    gap: 1rem;
+    padding: 0 1rem;
   }
 
   .centerContent {
-    padding-bottom: 0;
+    max-width: 95%;
   }
 
   .description {
-    max-width: 100%;
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .categoryTitle {
+    font-size: 1.75rem;
   }
 }
