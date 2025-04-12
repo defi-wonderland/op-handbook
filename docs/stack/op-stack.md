@@ -131,16 +131,9 @@ getBlobByIndex(uint256 index) → bytes
 is not just an implementation detail — it’s a trust assumption. If you can’t access the data, you can’t prove or dispute anything.
 
 ## Summary
+All of this can be summarized to the following chart, with the actual ‘players’ of the stack:
 
-| Layer         | Component       | Description                                                                 |
-|---------------|----------------|-----------------------------------------------------------------------------|
-| DA            | `op-batcher`    | Posts L2 data to Ethereum (blobs or calldata)                              |
-| Sequencing    | `op-node`       | Orders transactions, derives payloads                                      |
-| Execution     | `op-geth`       | Processes payloads, transitions state                                      |
-| Output Roots  | `op-proposer`   | Posts state commitments to Ethereum                                        |
-| Fault Proofs  | `op-challenger` | Monitors state roots, disputes invalid ones via Dispute Games              |
-| Settlement    | L1              | Receives and verifies claims from the rollup                               |
-| Governance    | `op-governor`   | Configuration, upgrades, permissionless proposal systems (varies per chain) |
+![flow.png](img/flow.png)
 
 :::info
 The stack is modular and evolving. Expect new components, alternative clients, and additional governance layers to appear over time.
