@@ -18,7 +18,7 @@ const categories = [
   {
     title: 'GOVERNANCE',
     icon: '/img/governance.svg',
-    href: '/docs/governance/overview',
+    href: '/docs/governance/governance-overview',
   },
   {
     title: 'PROCESSES',
