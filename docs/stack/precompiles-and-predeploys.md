@@ -74,3 +74,9 @@ We could say that the `L2CrossDomainMessenger` is our higher-level API that does
 :::important 
 Without the `L2ToL1MessagePasser`’s record, there’s no evidence on L2 that Joxes started a withdrawal. L1 would have no way to verify the claim.
 :::
+
+:::info reference
+For reference on predeploys, go [here](https://specs.optimism.io/protocol/predeploys.html)
+
+![predeploys.png](img/predeploys.png)
+:::
