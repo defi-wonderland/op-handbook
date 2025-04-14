@@ -24,3 +24,4 @@ After waiting, it will pack the information into a transaction that will go to t
 :::info Reference
 For further reference about smart contracts see [L2BEAT OP Mainnet](https://l2beat.com/scaling/projects/op-mainnet#contracts)
 :::
+
