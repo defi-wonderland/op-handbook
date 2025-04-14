@@ -31,6 +31,7 @@ const sidebars: SidebarsConfig = {
           items: [
             'governance/the-operating-manual/the-operating-manual',
            'governance/the-operating-manual/the-citizens-house',
+           'governance/the-operating-manual/the-token-house',
           ]
         },
         {
