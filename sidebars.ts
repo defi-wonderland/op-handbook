@@ -42,8 +42,7 @@ const sidebars: SidebarsConfig = {
             'governance/our-work/permissionless-proposals',
           ]
         },
-
-
+        'governance/bye',
       ],
     },
     {
