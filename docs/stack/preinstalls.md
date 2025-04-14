@@ -6,8 +6,6 @@ These are deployed at fixed addresses right from the chain’s genesis, but they
 
 Why? Certain widely used contracts (like `Safe`, `Multicall3` or `create2Deployer`) are “preinstalled” for convenience. Developers don’t need to redeploy them. The thing is that OP team is not directly responsible for their code.
 
-![preinstalls.png](img/preinstalls.png)
-`
 - **`Safe and SafeL2`**: both are multi-sig wallets that support confirmations via signed messages ([ERC191](https://eips.ethereum.org/EIPS/eip-191)). The main difference is that SafeL2 emits events, and Safe don’t.
 - **`MultiSend` and `MultiSendCallOnly`:** batch multiple transactions into a single one, handy for complex operations. **`CallOnly`** variant restricts the batched ops to `CALL` instructions (no delegatecall, etc.)
 - **`SafeSingletonFactory`**: Used by Safe-related contracts for deterministic deployment, referencing Arachnid’s approach. Includes chain ID in the pre-signed tx to avoid cross-chain replay issues.
