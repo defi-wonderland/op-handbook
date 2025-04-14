@@ -24,7 +24,6 @@ const sidebars: SidebarsConfig = {
       items: [
         'governance/governance-overview',
         'governance/intro-to-governance',
-        'governance/definitions',
         'governance/governor-walkthrough',
         {
           type: 'category',
