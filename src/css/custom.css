@@ -16,6 +16,8 @@
   --op-red-light: #ff1a34;
   --op-red-lighter: #ff263f;
   --op-red-lightest: #ff475d;
+  --wonderland-dark: #0E152C;
+  --wonderland-lila: #a371ce;
 
   /* Theme Colors */
   --ifm-color-primary: var(--op-red);
@@ -100,14 +102,40 @@ body {
 }
 
 ::selection {
-  background: var(--op-red);
-  color: var(--op-dark);
+  background: var(--wonderland-lila);
+  color: var(--wonderland-dark);
 }
 
-/* Main content background */
-#__docusaurus {
-  min-height: 100vh;
+::-moz-selection {
+  background: var(--wonderland-lila);
+  color: var(--wonderland-dark);
+}
+
+/* Main content layout */
+.main-wrapper {
   background: transparent;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  background: transparent;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content area */
+article {
+  background: transparent;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-doc-markdown {
+  flex: 1 0 auto;
 }
 
 /* Typography */
@@ -198,20 +226,6 @@ b {
 
 .markdown {
   font-weight: 300;
-}
-
-/* Main content background */
-main {
-  background: transparent;
-}
-
-.main-wrapper {
-  background: transparent;
-}
-
-/* Content area */
-article {
-  background: transparent;
 }
 
 /* Override any white backgrounds */
@@ -320,6 +334,7 @@ article {
 
 .menu {
   background: var(--op-dark) !important;
+  padding: 0;
 }
 
 /* Make all menu links consistent */
@@ -331,8 +346,13 @@ article {
   will-change: color, transform;
   transition: color var(--ifm-transition-fast) ease, transform var(--ifm-transition-slow) ease;
   position: relative;
-  padding-left: 1rem;
+  padding: 0.35rem 1rem;
   border-radius: 0;
+}
+
+.menu__list {
+  margin: 0;
+  padding: 0;
 }
 
 .menu__list .menu__link:hover {
@@ -457,7 +477,7 @@ article {
 /* Links in markdown content */
 .markdown a:not(.card),
 .theme-doc-markdown a:not(.card) {
-  color: var(--op-red);
+  color: var(--wonderland-lila);
   background: linear-gradient(currentColor 0 0) 
     bottom left/
     var(--underline-width, 0%) 1px
@@ -468,9 +488,33 @@ article {
 
 .markdown a:hover,
 .theme-doc-markdown a:hover {
-  color: var(--op-red-light);
+  color: var(--wonderland-lila);
+  opacity: 0.8;
   --underline-width: 100%;
   transition: color 0.2s ease, background-size 0.2s ease-in;
+}
+
+/* Details and Summary styling */
+.markdown details,
+.theme-doc-markdown details {
+  border: 1px solid var(--wonderland-lila);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: rgba(163, 113, 206, 0.05);
+}
+
+.markdown summary,
+.theme-doc-markdown summary {
+  color: var(--wonderland-lila);
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.markdown summary:hover,
+.theme-doc-markdown summary:hover {
+  opacity: 0.8;
 }
 
 /* Code blocks */
