@@ -125,4 +125,4 @@ Instead of total token supply, quorum is based on votable supply — the total O
 
 ## Future Extensions
 
-We are working on an upgrade that is evolving toward permissionless proposals, enforced via `Top100DelegatesProposalValidator` contract, it gates access to `propose()` based on delegate approvals and submission windows, allowing any qualifying participant to propose, while still preserving cycle alignment.
+We are working on an upgrade that is evolving toward permissionless proposals, enforced via `DelegatesProposalValidator` contract, it gates access to `propose()` based on delegate approvals and submission windows, allowing any qualifying participant to propose, while still preserving cycle alignment.
