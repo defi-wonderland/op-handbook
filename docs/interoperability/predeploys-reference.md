@@ -4,6 +4,10 @@ title: Predeploys
 sidebar_label: Predeploys
 ---
 
+:::info reference
+This is a high-level summary of predeploys. For more technical details, see the [Predeploys Spec](https://specs.optimism.io/interop/predeploys.html).
+:::
+
 The OP Stack introduces a set of system-level contracts, or predeploys, that are deployed at fixed addresses across all OP Chains. These contracts define the foundation for interop: message validation, token transfers, ETH bridging, and standard contract deployment patterns. This section describes each predeploy’s role and interface in the Superchain.
 
 ## `CrossL2Inbox`
