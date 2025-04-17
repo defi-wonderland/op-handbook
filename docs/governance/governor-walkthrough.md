@@ -24,7 +24,7 @@ The [`OptimismGovernor`](https://github.com/voteagora/optimism-governor/blob/mai
 - `ProposalTypesConfigurator`: `0xCE52b7cc490523B3e81C3076D5ae5Cca9a3e2D6F`
 - `VotableSupplyOracle`: `0x1b7CA7437748375302bAA8954A2447fC3FBE44CC`
 
-While proposals today are **signaling-only** (no auto-executed onchain effects), the system enforces the full governance lifecycle: `Pending → Active → Succeeded → Queued → Executed`.
+While proposals today are **signaling-only** for most of them (no auto-executed onchain effects), the system enforces the full governance lifecycle: `Pending → Active → Succeeded → Queued → Executed`. The exceptions are proposals related to transfer OP tokens and ETH to the governance or Security Council fund.
 
 ## Core Roles
 
