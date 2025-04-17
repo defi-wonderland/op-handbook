@@ -101,7 +101,7 @@ The verifier prunes blocks older than 2 * EXPIRY_TIME and filters out blocks wit
 - Cross-chain message validity is transitive. If an initiating message depends on another unsafe message, the executing message is also unsafe.
 - The system tolerates unsafe messages temporarily. They are valid only when all dependencies become cross-safe.
 
-## As a TL;DR
+## TL;DR
 
 Every executing message must:
 - Prove its initiating log exists
