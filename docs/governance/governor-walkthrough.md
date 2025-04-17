@@ -24,7 +24,7 @@ The [`OptimismGovernor`](https://github.com/voteagora/optimism-governor/blob/mai
 - `ProposalTypesConfigurator`: `0xCE52b7cc490523B3e81C3076D5ae5Cca9a3e2D6F`
 - `VotableSupplyOracle`: `0x1b7CA7437748375302bAA8954A2447fC3FBE44CC`
 
-While proposals today are **signaling-only** (no auto-executed onchain effects), the system enforces the full governance lifecycle: `Pending → Active → Succeeded → Queued → Executed`.
+While proposals today are signaling-only for most types (i.e., they do not trigger automatic onchain execution), the system enforces the full governance lifecycle: `Pending → Active → Succeeded → Queued → Executed`. The key exceptions are Governance Fund (Missions) proposals and certain Security Council proposals, which do cause onchain token transfers, for example, transferring OP to fund a Mission or allocating ETH from the treasury.
 
 ## Core Roles
 
@@ -125,4 +125,4 @@ Instead of total token supply, quorum is based on votable supply — the total O
 
 ## Future Extensions
 
-We are working on an upgrade that is evolving toward permissionless proposals, enforced via `Top100DelegatesProposalValidator` contract, it gates access to `propose()` based on delegate approvals and submission windows, allowing any qualifying participant to propose, while still preserving cycle alignment.
+We are working on an upgrade that is evolving toward permissionless proposals, enforced via `DelegatesProposalValidator` contract, it gates access to `propose()` based on delegate approvals and submission windows, allowing any qualifying participant to propose, while still preserving cycle alignment.
