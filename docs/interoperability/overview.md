@@ -27,4 +27,4 @@ By the end of this section, you should be able to answer:
 - What risks are introduced by preconfirmations or cyclic dependencies?
 - Why does interop require consistent predeploy addresses across chains?
 
-Let's understand how OP Chains talk to each other and what keeps the system safe. Let's go : )
+Let's understand how OP Chains talk to each other and what keeps the system safe.
