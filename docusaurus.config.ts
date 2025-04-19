@@ -40,8 +40,6 @@ const config: Config = {
           editUrl: undefined,
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
-          disableVersioning: true,
-          includeCurrentVersion: true,
         },
         blog: false,
         theme: {
