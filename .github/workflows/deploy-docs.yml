@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Deploy Docs to Vercel
 
 on:
   push:
@@ -38,20 +38,18 @@ jobs:
 
       - name: Checkout code with full history
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # This fetches the complete Git history
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20"
-          cache: "npm"
+          cache: "yarn"
 
       - name: Install dependencies
-        run: npm install
+        run: yarn --frozen-lockfile
 
       - name: Build project
-        run: npm run build
+        run: yarn build
 
       - name: Deploy to Vercel
         id: vercel-deployment
