@@ -70,7 +70,7 @@ The token must also be deployed at the same address on every OP Chain where it w
 	6.	The tokens are minted to the destination user.
 
 
-## Contract Walkthrough
+## `SuperchainTokenBridge` Contract Walkthrough
 
 ### `sendERC20`
 ```solidity
