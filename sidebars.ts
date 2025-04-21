@@ -50,6 +50,14 @@ const sidebars: SidebarsConfig = {
       label: 'Interop',
       items: [
         'interoperability/overview',
+        'interoperability/intro-to-interop',
+        'interoperability/messaging-protocol',
+        'interoperability/token-interop',
+        'interoperability/eth-interop',
+        'interoperability/execution-and-sequencing',
+        'interoperability/verification-pipeline',
+        'interoperability/predeploys-reference',
+        'interoperability/bye',
       ],
     },
     {

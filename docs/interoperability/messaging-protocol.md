@@ -1,0 +1,112 @@
+---
+id: messaging-protocol
+title: Messaging
+sidebar_label: Messaging
+---
+
+:::info reference
+This is a high level summary of how messaging works. We recommend you to read it, and after it go to the [OP Stack Specs about Messaging](https://specs.optimism.io/interop/messaging.html).
+:::
+
+Cross-chain messaging enables OP Chains to communicate directly, without routing messages through Ethereum. This low-latency communication is the foundation of Superchain interop. It powers cross-chain contract composition, token transfers, and native ETH bridging.
+
+Each message consists of two parts:
+- An **initiating message**: a log emitted on the source chain.
+- An **executing message**: a log on the destination chain that confirms the initiating message.
+
+A message is valid only if the executing message references a valid initiating message. This reference is encoded as an `Identifier` and enforced by a checksum. Validation is performed by the `CrossL2Inbox` contract, which emits an `ExecutingMessage` event on success.
+
+## Messaging Flow
+
+1. **Send a message**: A contract on the source chain calls `L2ToL2CrossDomainMessenger.sendMessage()`, emitting a log.
+
+2. **Identify the message**: The log is uniquely identified by an `Identifier`:
+
+   ```solidity
+   struct Identifier {
+     address origin;
+     uint256 blocknumber;
+     uint256 logIndex;
+     uint256 timestamp;
+     uint256 chainid;
+   } 
+    ```
+
+3. Relay the message: A relayer calls `relayMessage()` on the destination chain. The call includes the Identifier and the message payload.
+4. Validate the message: The destination chain uses `CrossL2Inbox.validateMessage()` to confirm the initiating message exists and that all invariants are satisfied.
+
+If validation passes, the destination contract is called with the message payload. Otherwise, the transaction reverts.
+
+## Messaging Invariants
+
+The protocol enforces the following rules:
+- **Chain ID Invariant**: The chainid in the Identifier must belong to the destination chain’s dependency set.
+- **Timestamp Invariant**: The initiating message’s timestamp must be less than or equal to the executing message’s timestamp. It must also be greater than the Interop upgrade timestamp.
+- **Expiry Invariant**: The executing message must be submitted within 180 days of the initiating message’s timestamp.
+
+If any invariant is violated, the message is invalid. The block containing it is reverted or replaced.
+
+## Access Lists
+
+Each executing message must be declared in a transaction’s access list. The access list entry includes:
+- **Type 1**: Lookup identity (chain ID, block number, timestamp, log index)
+- **Type 2** (optional): Chain ID extension for 256-bit chain IDs
+- **Type 3**: Checksum over the initiating message and metadata
+
+The checksum is derived as:
+
+`logHash = keccak256(origin || msgHash)`
+`idPacked = timestamp || blockNumber || log index`
+`idLogHash = keccak256(logHash || idPacked)`
+`bareChecksum = keccak256(idLogHash || chainId)`
+`checksum = 0x03 || bareChecksum[1:]`
+
+If the checksum is present and valid, the `CrossL2Inbox` allows the message to execute.
+
+## Message Payload
+
+The message is serialized by concatenating its topics and data:
+
+```solidity
+msg := []byte{}
+for _, topic := range log.Topics {
+    msg = append(msg, topic.Bytes()...)
+}
+msg = append(msg, log.Data...)
+```
+
+This serialized payload is passed through `keccak256` and matched during execution. Contracts can decode it with abi.decode.
+
+## Push and Pull Messaging
+
+Interop supports both messaging models:
+- **Push**: The source contract emits a message. A relayer submits it on the destination chain. Used by `L2ToL2CrossDomainMessenger`.
+- **Pull**: The destination contract calls `validateMessage()` on `CrossL2Inbox`, verifying a remote event. Used for consuming logs as oracles.
+
+Use push for messaging that triggers execution. Use pull to reference attestations or logs from other chains.
+
+## Safety and the Message Graph
+
+Messages form a directed graph of dependencies across blocks. A block that contains an executing message depends on the block that emitted the initiating message.
+
+If the initiating message is invalid, the entire dependency chain becomes invalid. This includes:
+- **Reorgs**: If a source block is reorged, its dependent messages and blocks become invalid.
+- **Cycles**: Messages with the same timestamp across multiple chains can create valid cyclic dependencies.
+- **Transitive dependencies**: A block is only cross-safe if all its ancestors and dependencies are cross-safe.
+
+The verifier prunes blocks older than 2 * EXPIRY_TIME and filters out blocks with unsafe dependencies. This bounding prevents unbounded graph growth and enables efficient resolution.
+
+## Security Considerations
+- Chains can include each other in their dependency sets. This creates cycles. The protocol guarantees that unsafe blocks can still be promoted to safe even when cycles exist.
+- Cross-chain message validity is transitive. If an initiating message depends on another unsafe message, the executing message is also unsafe.
+- The system tolerates unsafe messages temporarily. They are valid only when all dependencies become cross-safe.
+
+## TL;DR
+
+Every executing message must:
+- Prove its initiating log exists
+- Belong to a known chain in the dependency set
+- Pass timestamp and expiry validation
+- Be declared in the access list with a valid checksum
+
+Messages propagate trust-minimized state across chains with 1-block latency. Contracts can safely react to events emitted on remote OP Chains, without relying on Ethereum as a bridge.
