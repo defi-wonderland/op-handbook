@@ -123,7 +123,10 @@ These properties are enforced by the system:
 | Rate limiting | None in v1 | Native |
 | Replay protection | Built-in via L2 messaging | Optional |
 
-`xERC20` offers more flexibility, but introduces a “weakest link” risk when multiple bridges are authorized. `SuperchainERC20` favors simplicity and safety, and they are compatible.
+`xERC20` offers more flexibility, but introduces a “weakest link” risk when multiple bridges are authorized. `SuperchainERC20` favors simplicity and safety, and they are compatible. 
+
+The Superchain also supports a hybrid token implementation, the [`CrosschainERC20`](https://github.com/defi-wonderland/crosschainERC20/blob/dev/README.md), that combines both [ERC-7281](https://ethereum-magicians.org/t/erc-7281-sovereign-bridged-tokens/14979) and [ERC-7802](https://eips.ethereum.org/EIPS/eip-7802). This allows us to think about compatibility with xERC20-style bridges and the Superchain’s native interop model in a single token contract. So that devs can deploy new tokens or adapt existing ones using the provided factory, lockbox, and adapter contracts, while maintaining deterministic addresses across chains.
+
 
 ## TL;DR
 
