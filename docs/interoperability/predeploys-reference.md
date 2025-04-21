@@ -43,6 +43,10 @@ On the destination chain, a relayer calls `relayETH`, which validates the messag
 
 Only the Superchain bridge contract is authorized to call burn and mint, preventing misuse and ensuring that ETH movements always correspond to valid cross-chain messages.
 
+:::info reference
+The following predeploys won't be available in the first Interop Mainnet iteration, but should be in the future.
+:::
+
 ## `OptimismSuperchainERC20Factory`
 
 This factory (0x4200...026) contract deploys `SuperchainERC20` tokens using the `CREATE3` opcode and a Beacon proxy pattern. Anyone can deploy a new token by calling deploy with the remoteToken address, name, symbol, and decimals. The factory computes a deterministic address using the metadata hash as a salt and emits `OptimismSuperchainERC20Created` with the new token address and metadata.
