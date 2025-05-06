@@ -65,6 +65,13 @@ const sidebars: SidebarsConfig = {
       label: 'Processes',
       items: [
         'processes/overview',
+        'processes/design',
+        'processes/spec',
+        'processes/implementation',
+        'processes/fma',
+        'processes/projects',
+        'processes/coding',
+        'processes/challenge',
       ],
     },
   ],
