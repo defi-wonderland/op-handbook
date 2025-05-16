@@ -121,7 +121,7 @@ These properties are enforced by the system:
 | Addressing | Same address on all chains | Flexible, but requires a registry |
 | Permissions | Fixed bridge (SuperchainTokenBridge) | Configurable per bridge |
 | Rate limiting | None in v1 | Native |
-| Replay protection | Built-in via L2 messaging | Optional |
+| Replay protection | Re-relaying the message on the `L2ToL2CrossDomainMessenger` | Optional |
 
 `xERC20` offers more flexibility, but introduces a “weakest link” risk when multiple bridges are authorized. `SuperchainERC20` favors simplicity and safety, and they are compatible. 
 
