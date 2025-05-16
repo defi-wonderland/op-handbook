@@ -61,9 +61,7 @@ These are validated by `CrossL2Inbox.validateMessage()` before the message can b
 
 ### How Interop actually happens: The node's role
 
-In the OP Stack, interoperability is driven by nodes.
-
-When a message is emitted on a source chain:
+In the OP Stack, interoperability is driven by nodes. When a message is emitted on a source chain:
 - The **relayer or sequencer node** watches for events from all chains in its dependency set.
 - It stores the message metadata off-chain, including the `Identifier` and `msgHash`.
 - When building a block on the destination chain, the node includes the message in a transaction’s **access list**, enabling `CrossL2Inbox` to validate it.
