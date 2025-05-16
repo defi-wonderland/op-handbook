@@ -20,33 +20,6 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Governance',
-      items: [
-        'governance/governance-overview',
-        'governance/intro-to-governance',
-        'governance/governor-walkthrough',
-        {
-          type: 'category',
-          label: 'The Operating Manual',
-          items: [
-            'governance/the-operating-manual/the-operating-manual',
-           'governance/the-operating-manual/the-citizens-house',
-           'governance/the-operating-manual/the-token-house',
-          ]
-        },
-        {
-          type: 'category',
-          label: 'Our Work',
-          items: [
-            'governance/our-work/overview',
-            'governance/our-work/permissionless-proposals',
-          ]
-        },
-        'governance/bye',
-      ],
-    },
-    {
-      type: 'category',
       label: 'Interop',
       items: [
         'interoperability/overview',
@@ -72,6 +45,33 @@ const sidebars: SidebarsConfig = {
         'processes/projects',
         'processes/coding',
         'processes/challenge',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Governance',
+      items: [
+        'governance/governance-overview',
+        'governance/intro-to-governance',
+        'governance/governor-walkthrough',
+        {
+          type: 'category',
+          label: 'The Operating Manual',
+          items: [
+            'governance/the-operating-manual/the-operating-manual',
+           'governance/the-operating-manual/the-citizens-house',
+           'governance/the-operating-manual/the-token-house',
+          ]
+        },
+        {
+          type: 'category',
+          label: 'Our Work',
+          items: [
+            'governance/our-work/overview',
+            'governance/our-work/permissionless-proposals',
+          ]
+        },
+        'governance/bye',
       ],
     },
   ],
