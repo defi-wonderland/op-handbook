@@ -34,6 +34,8 @@ The process is secured by the OP Stack’s messaging protocol and enforced at th
 | `L2ToL2CrossDomainMessenger` | Message transport layer. |
 | `CrossL2Inbox` | Verifies message validity. |
 
+Although both `CrossL2Inbox` and `SuperchainTokenBridge` include safety checks and caller validation, they serve different roles. `CrossL2Inbox` enforces message origin validity, while `SuperchainTokenBridge` governs token movement and supply control. Their separation aligns with the modular OP Stack architecture.
+
 ## SuperchainERC20
 
 This is an ERC-20 that implements [ERC-7802](https://eips.ethereum.org/EIPS/eip-7802). It exposes two core methods:
@@ -113,6 +115,30 @@ These properties are enforced by the system:
 - Determinism: The token must live at the same address on all chains.
 - Unique messaging path: All transfers use `L2ToL2CrossDomainMessenger`.
 
+:::tip Can token supply change across chains?
+The default Superchain bridge model enforces supply conservation: tokens must be burned on the source chain before being minted on the destination. However, custom bridges could intentionally mint or burn in specific cases (e.g. rewards or governance). These are not part of the standard `SuperchainTokenBridge` flow.
+:::
+
+## Rate Limiting
+
+Each `SuperchainTokenBridge` contract enforces a **rate limit** for every bridged token. This mechanism limits the volume of assets that can be transferred across chains over time, helping mitigate systemic risk from bridge exploits or liquidity shocks.
+
+Rate limits are enforced:
+- **Per token**, per bridge
+- **Per time window**, measured in L2 blocks
+
+If the outbound volume exceeds the allowed limit within the window, additional transfers will be rejected until the limit resets.
+
+This applies to both:
+- **ETH transfers** using native ETH bridging
+- **ERC-20 transfers** using `SuperchainERC20`
+
+Rate limiting is implemented at the contract level and is designed to prevent sudden outflows of assets due to relayer misbehavior, compromised chains, or unexpected economic shocks.
+
+:::tip Not the same as whitelisting
+Rate limiting does not restrict *who* can use a bridge or *which contracts* are allowed. It only limits *how much* of a given token can be transferred in a given period.
+:::
+
 ## Comparison: `SuperchainERC20` vs `xERC20`
 
 | Feature | SuperchainERC20 | xERC20 (ERC-7281) |
@@ -127,6 +153,9 @@ These properties are enforced by the system:
 
 The Superchain also supports a hybrid token implementation, the [`CrosschainERC20`](https://github.com/defi-wonderland/crosschainERC20/blob/dev/README.md), that combines both [ERC-7281](https://ethereum-magicians.org/t/erc-7281-sovereign-bridged-tokens/14979) and [ERC-7802](https://eips.ethereum.org/EIPS/eip-7802). This allows us to think about compatibility with xERC20-style bridges and the Superchain’s native interop model in a single token contract. So that devs can deploy new tokens or adapt existing ones using the provided factory, lockbox, and adapter contracts, while maintaining deterministic addresses across chains.
 
+## What about NFTs?
+
+ERC-721 bridging from L1 to L2 is still handled using the traditional `L1StandardBridge` and `L2StandardBridge` contracts. These follow the classic Merkle-proof model and are not yet supported by native interop. NFT support in the Superchain interop model is a potential future extension.
 
 ## TL;DR
 

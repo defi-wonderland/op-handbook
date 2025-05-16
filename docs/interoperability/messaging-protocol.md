@@ -44,7 +44,8 @@ The protocol enforces the following rules:
 - **Timestamp Invariant**: The initiating message’s timestamp must be less than or equal to the executing message’s timestamp. It must also be greater than the Interop upgrade timestamp.
 - **Expiry Invariant**: The executing message must be submitted within 180 days of the initiating message’s timestamp.
 
-If any invariant is violated, the message is invalid. The block containing it is reverted or replaced.
+If any invariant is violated, the message is invalid. The block containing it is reverted or replaced. Also, partial data publication can happen when a sequencer includes a block before its associated data (e.g. blobs or calldata) has been fully posted to Ethereum. This temporarily places the block in a "cross-unsafe" state until the data becomes retrievable.
+
 
 ### Emission vs. Execution View
 
@@ -61,7 +62,8 @@ These are validated by `CrossL2Inbox.validateMessage()` before the message can b
 
 ### The node’s role in messaging
 
-In the OP Stack, interoperability is driven by nodes. When a message is emitted on a source chain:
+In the OP Stack, interoperability is driven by nodes. The sequencer is also the block builder. It pulls transactions from the mempool (including cross-chain messages), assembles them into blocks, and submits them to the execution engine via the Engine API.
+When a message is emitted on a source chain:
 - The **relayer or sequencer node** watches for events from all chains in its dependency set.
 - It stores the message metadata off-chain, including the `Identifier` and `msgHash`.
 - When building a block on the destination chain, the node includes the message in a transaction’s **access list**, enabling `CrossL2Inbox` to validate it.
@@ -69,6 +71,7 @@ In the OP Stack, interoperability is driven by nodes. When a message is emitted 
 This means message passing in the Superchain is node-mediated. The EVM only enforces **local validation**, but the cross-chain part is coordinated by the **consensus node software**.
 
 Interop only works if the node is configured to watch other chains, and knows how to validate their logs.
+The Identifier.timestamp is compared to the destination block’s timestamp during execution to ensure ordering is preserved. This prevents messages from being predeclared for future blocks or replayed in unintended contexts.
 
 ## Access Lists
 
@@ -130,6 +133,10 @@ Interop supports both messaging models:
 
 Use push messaging to trigger cross-chain contract execution. Use pull messaging to verify attestations or read logs emitted by other chains.
 
+:::warning L1 is not part of native interop
+The OP Stack’s native interop protocol (using access lists and `CrossL2Inbox`) only works between OP Chains (L2 ↔ L2). It cannot be used for L1 ↔ L2 messaging, since Ethereum does not support access list validation at consensus level. L1 messaging continues to use classic bridge contracts with Merkle proofs.
+:::
+
 ## Safety and the Message Graph
 
 Messages form a directed graph of dependencies across blocks. A block that contains an executing message depends on the block that emitted the initiating message.
@@ -139,12 +146,40 @@ If the initiating message is invalid, the entire dependency chain becomes invali
 - **Cycles**: Messages with the same timestamp across multiple chains can create valid cyclic dependencies.
 - **Transitive dependencies**: A block is only cross-safe if all its ancestors and dependencies are cross-safe.
 
-The verifier prunes blocks older than 2 * EXPIRY_TIME and filters out blocks with unsafe dependencies. This bounding prevents unbounded graph growth and enables efficient resolution.
+The verifier prunes blocks older than 2 * EXPIRY_TIME and filters out blocks with unsafe dependencies. This bounding prevents unbounded graph growth and enables efficient resolution. 
 
+A safe executed message is one that:
+- Comes from a source block that is safe or finalized
+- References only other messages from safe blocks
+- Has all its metadata and calldata available in DA
+
+Only when all these conditions are true can the verifier promote the block to safe.
+
+## Block Safety Levels
+
+In the OP Stack, blocks are classified based on how trustworthy and complete their dependencies are. This affects whether downstream messages can rely on them.
+
+- **Unsafe**: A block with no safety guarantees. It has not been validated or published to L1. It may contain unverified messages or be subject to reorg.
+- **Cross-unsafe**: A block with validated cross-chain messages, but where the associated data (like blobs or calldata) may not yet be fully published to the data availability layer. The messages it references are valid, but not yet provably retrievable.
+- **Safe**: A block where all referenced cross-chain messages and their source blocks are validated, the data is published to DA, and all dependencies are resolved. These blocks can be safely depended upon.
+
+This layered safety model allows the system to provide fast cross-chain messaging while still enforcing correctness through later verification.
+
+## Global SuperRoot
+
+Every node in the Superchain interop cluster computes a local view of the `superRoot`, which aggregates the output roots of all chains at a given timestamp. 
+
+This is a simple Merkle aggregation and not computationally expensive. The global `superRoot` may be shared via gossip or posted to L1 in future versions.
+
+:::info Reference
+For more information on SuperRoots, go [here](https://specs.optimism.io/fault-proof/stage-one/optimism-portal.html#super-root)
+:::
 ## Security Considerations
 - Chains can include each other in their dependency sets. This creates cycles. The protocol guarantees that unsafe blocks can still be promoted to safe even when cycles exist.
 - Cross-chain message validity is transitive. If an initiating message depends on another unsafe message, the executing message is also unsafe.
 - The system tolerates unsafe messages temporarily. They are valid only when all dependencies become cross-safe.
+
+In future versions, verifiers may use SGX (trusted execution environments) or ZK proofs to verify that sequencers built blocks correctly.
 
 ## TL;DR
 

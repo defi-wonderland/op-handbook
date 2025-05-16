@@ -12,7 +12,7 @@ The OP Stack introduces a set of system-level contracts, or predeploys, that are
 
 ## `CrossL2Inbox`
 
-`CrossL2Inbox` (0x4200...022) is the contract responsible for validating messages on the destination chain. Any user or contract can call it to confirm that a message emitted on a source chain is valid, meets all protocol invariants, and was explicitly declared in the access list.
+`CrossL2Inbox` (0x420...022) is the contract responsible for validating messages on the destination chain. Any user or contract can call it to confirm that a message emitted on a source chain is valid, meets all protocol invariants, and was explicitly declared in the access list.
 
 Message validation is done by calling `validateMessage`, which takes an `Identifier` struct and the `keccak256` hash of the payload. If the message is valid, the contract emits the ExecutingMessage event, which acts as proof of execution. This pattern lets smart contracts verify events from other chains in a trust-minimized way.
 
