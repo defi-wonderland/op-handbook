@@ -55,6 +55,11 @@ If instead the rollup uses an external service like Celestia or EigenDA, it’s 
 
 The *real question* is: can you reconstruct the state if you're not the sequencer?
 
+:::tip What is a sequencer?
+A **sequencer** is the component responsible for ordering and executing transactions on the L2. In OP Stack rollups, it's typically a single trusted machine that runs both `op-node` and `op-geth`. It builds blocks, runs the EVM, and sends the resulting state commitments and transaction data to Ethereum. While centralized by default, the goal is to decentralize the sequencer over time.
+:::
+
+
 Rollups are only meaningfully decentralized if *anyone* can recompute and verify the current state. DA makes that possible.
 
 ## Reorgs
