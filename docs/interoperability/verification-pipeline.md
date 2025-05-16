@@ -63,7 +63,7 @@ This is the strongest safety level. Finalized data can be used for long-term com
 
 ## Honest Verifier
 
-An honest verifier mimics the logic of a sequencer but with stricter rules. It:
+An honest verifier mimics the logic of a sequencer, but applies stricter rules before accepting blocks as safe. It:
 
 - Reproduces transaction execution for the entire block.
 - Verifies that each executing message points to a valid initiating message.
@@ -72,14 +72,22 @@ An honest verifier mimics the logic of a sequencer but with stricter rules. It:
 
 The verifier never speculatively includes messages. It only promotes blocks after the entire dependency graph is resolved.
 
-Some security considerations are:
+### What makes it stricter?
 
-- **Reorg risk:** Unsafe and safe blocks can be reverted if the underlying chain reorganizes.
-- **Partial DAG resolution:** The verifier must resolve transitive dependencies. Messages that depend on invalid or unsafe blocks must be filtered out.
-- **Preconfirmation risk:** Unsafe messages rely on the sequencer’s claim. Clients interacting with unsafe blocks should consider this trust assumption.
-- **SGX alternatives:** In the future, verifiers may require SGX or ZK proofs to guarantee that sequencer behavior matches expectations.
+While the verifier and sequencer both run the same block derivation and execution logic, their trust models and promotion rules differ. The sequencer optimistically produces low-latency blocks, whereas the verifier ensures correctness and finality before recognizing a block as safe.
 
-## TL;DR
+| Feature                    | **Sequencer**                                                | **Honest Verifier**                                           |
+|---------------------------|--------------------------------------------------------------|---------------------------------------------------------------|
+| **Block construction**     | Builds blocks using mempool, DA inputs                       | Replays sequencer blocks deterministically                     |
+| **Cross-chain messages**   | Included speculatively                                       | Fully resolved before execution                               |
+| **Dependency handling**    | May include executing messages before source is confirmed    | Requires full dependency graph to be resolved                 |
+| **Safety labels**          | Produces `unsafe` blocks                                     | Promotes blocks from `unsafe` → `safe` once rules are met     |
+| **Reorg handling**         | May follow reorgs, no rollback enforcement                   | Filters out reorged, invalid, or unsafe-dependent blocks       |
+| **Trust model**            | Relies on sequencer key + user optimism                      | Enforces deterministic validity checks                        |
+
+The verifier plays a critical role in the safety pipeline, because it’s what promotes blocks from `unsafe` to `safe` or `finalized` status, by re-validating them against strict protocol invariants.
+
+## Recap
 
 The verifier ensures that cross-chain execution is correct, safe, and backed by finality. It is the only entity capable of safely promoting blocks in a way that guarantees cross-chain consistency.
 
