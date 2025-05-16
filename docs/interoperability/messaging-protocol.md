@@ -59,7 +59,7 @@ Messages look different at emission and execution:
 
 These are validated by `CrossL2Inbox.validateMessage()` before the message can be executed.
 
-### How Interop actually happens: The node's role
+### The node’s role in messaging
 
 In the OP Stack, interoperability is driven by nodes. When a message is emitted on a source chain:
 - The **relayer or sequencer node** watches for events from all chains in its dependency set.
@@ -73,13 +73,17 @@ Interop only works if the node is configured to watch other chains, and knows ho
 ## Access Lists
 
 Each executing message must be declared in a transaction’s access list. 
+
 :::tip What’s an access list?
 Access lists are part of the OP Stack’s message validation system. Each cross-chain message must be declared up front in a transaction’s access list so the block builder can verify its origin and integrity before including it in a block. This process is enforced outside the EVM using the `CrossL2Inbox`, and it ensures safety without slowing down execution.
 :::
+
 The access list entry includes:
 - **Type 1**: Lookup identity (chain ID, block number, timestamp, log index)
-- **Type 2** (optional): Chain ID extension for 256-bit chain IDs
+- **Type 2**: Chain ID extension, only required for chains using 256-bit IDs (rare in current deployments)
 - **Type 3**: Checksum over the initiating message and metadata
+
+This metadata enables `CrossL2Inbox` to validate the message *without* querying remote chains or requiring proofs. Messages not listed in the access list will be rejected.
 
 The checksum is derived as:
 
@@ -93,9 +97,16 @@ The checksum is derived as:
 
 `checksum = 0x03 || bareChecksum[1:]`
 
-If the checksum is present and valid, the `CrossL2Inbox` allows the message to execute.
+If the checksum is present and valid, the `CrossL2Inbox` allows the message to execute. This checksum must match the predeclared entry in the access list for validation to succeed.
 
+:::tip Access list ≠ dependency set
 
+The access list is per-transaction. It declares which message you’re consuming.
+
+The dependency set is per-chain. It defines which source chains are trusted at all.
+
+Both are required for message execution — the dependency set controls *who* you trust, and the access list controls *what* you’re trying to execute.
+:::
 
 ## Message Payload
 
@@ -115,9 +126,9 @@ This serialized payload is passed through `keccak256` and matched during executi
 
 Interop supports both messaging models:
 - **Push**: The source contract emits a message. A relayer submits it on the destination chain. Used by `L2ToL2CrossDomainMessenger`.
-- **Pull**: An event is emitted on origin chain, and on destination, `validateMessage()` on `CrossL2Inbox` is call to verify and process it. Used for consuming logs as oracles.
+- **Pull**: An event is emitted on origin chain, and on destination, `validateMessage()` on `CrossL2Inbox` is called to verify and process it.
 
-Use push for messaging that triggers execution. Use pull to reference attestations or logs from other chains.
+Use push messaging to trigger cross-chain contract execution. Use pull messaging to verify attestations or read logs emitted by other chains.
 
 ## Safety and the Message Graph
 
@@ -138,9 +149,9 @@ The verifier prunes blocks older than 2 * EXPIRY_TIME and filters out blocks wit
 ## TL;DR
 
 Every executing message must:
-- Prove its initiating log exists
-- Belong to a known chain in the dependency set
+- Prove that its initiating log exists
+- Belong to a chain in the dependency set
 - Pass timestamp and expiry validation
-- Be declared in the access list with a valid checksum
+- Be listed in the access list with a valid checksum
 
 Messages propagate trust-minimized state across chains with 1-block latency. Contracts can safely react to events emitted on remote OP Chains, without relying on Ethereum as a bridge.
