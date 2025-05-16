@@ -10,11 +10,18 @@ In this section we will describe the current governance proposal process of the 
 
 ## Bicameral Governance
 
-The Optimism Collective is governed by two Houses:
-- **Token House**: OP holders submit, deliberate, and vote on governance proposals. They can vote directly or delegate voting power to an eligible third party (a delegate).
-- **Citizens’ House**: Optimism Citizens allocate resources through Retro Funding. Citizenship is temporary and evolving via experimentation with Guest Voters. Citizens also vote on Retro Funding mission scope, budget, and can veto certain proposals.
+The Collective is governed by two Houses:
+- **Token House** handles most formal governance processes: protocol upgrades, OP allocation, representative elections, and proposal approvals.
+- **Citizens’ House** governs the distribution of Retro Funding and can **veto** proposals like protocol upgrades and inflation changes to protect the Collective from plutocratic or short-sighted decisions.
 
-All representatives are expected to act in accordance with the Rules of Engagement and Optimist Expectations.
+They were designed to serve different roles, and to check and balance each other’s influence.
+
+| House | Who votes? | Main Responsibilities | Voting System | Veto Powers |
+|-------|------------|------------------------|----------------|--------------|
+| **Token House** | OP holders & delegates | Protocol upgrades, treasury decisions, elections, governance proposals | On-chain Governor contract | Can veto some Citizen-led proposals |
+| **Citizens’ House** | EAS-attested Citizens | Retro Funding, mission scoping, long-term legitimacy | Snapshot (off-chain) | Can veto upgrades or inflation proposals passed by Token House |
+
+Together, this forms a bicameral system that balances **technical governance** with **public goods**. Certain proposals (like maintenance upgrades) require both Houses to participate, and others (like Retro Funding) are solely in the Citizens' domain.
 
 ## Governance Toolkit
 | Tool | Description |
