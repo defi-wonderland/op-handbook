@@ -81,7 +81,7 @@ This serialized payload is passed through `keccak256` and matched during executi
 
 Interop supports both messaging models:
 - **Push**: The source contract emits a message. A relayer submits it on the destination chain. Used by `L2ToL2CrossDomainMessenger`.
-- **Pull**: The destination contract calls `validateMessage()` on `CrossL2Inbox`, verifying a remote event. Used for consuming logs as oracles.
+- **Pull**: An event is emitted on origin chain, and on destination, `validateMessage()` on `CrossL2Inbox` is call to verify and process it. Used for consuming logs as oracles.
 
 Use push for messaging that triggers execution. Use pull to reference attestations or logs from other chains.
 
