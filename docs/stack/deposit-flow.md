@@ -9,9 +9,11 @@ sidebar_label: Deposit Flow
 Find the full documentation [here](https://docs.optimism.io/stack/transactions/deposit-flow).
 :::
 
-We have a user that deposits an ERC-20, for doing that it will interact with the [`L1StandardBridge`](https://github.com/ethereum-optimism/optimism/blob/cd2b0c13ca993d95422c447fce0e14227b50a5cb/packages/contracts-bedrock/src/L1/L1StandardBridge.sol) that will communicate with the [`L1CrossDomainMessenger`](https://github.com/ethereum-optimism/optimism/blob/cd2b0c13ca993d95422c447fce0e14227b50a5cb/op-e2e/bindings/l1crossdomainmessenger.go#L63), which will communicate with the [`OptimismPortal`](https://github.com/ethereum-optimism/optimism/blob/cd2b0c13ca993d95422c447fce0e14227b50a5cb/packages/contracts-bedrock/src/L1/OptimismPortal2.sol) —calling the function `depositTransaction(address _to, uint256 _value, uint64 _gasLimit, bool _isCreation, bytes memory _data) public payable metered(_gasLimit)`
+We have a user who wants to deposit an ERC-20 token from L1 to L2. To do that, they call a function on the [`L1StandardBridge`](https://github.com/ethereum-optimism/optimism/blob/cd2b0c13ca993d95422c447fce0e14227b50a5cb/packages/contracts-bedrock/src/L1/L1StandardBridge.sol), which sends a message through the [`L1CrossDomainMessenger`](https://github.com/ethereum-optimism/optimism/blob/cd2b0c13ca993d95422c447fce0e14227b50a5cb/op-e2e/bindings/l1crossdomainmessenger.go#L63) and then into the [`OptimismPortal`](https://github.com/ethereum-optimism/optimism/blob/cd2b0c13ca993d95422c447fce0e14227b50a5cb/packages/contracts-bedrock/src/L1/OptimismPortal2.sol).
 
-Now, all the L2 nodes will be listening to the deposit events, and the sequencer 👷‍♂️ will decide when to include it, we use the `OptimismPortal` for this. The events are not going to be processed immediately, to reduce the chances of reorgs.
+Behind the scenes, this triggers a call to `depositTransaction(...)`, the entrypoint that logs the deposit event to be picked up on L2.
+
+Now, all the L2 nodes will be listening to the deposit events, and the sequencer 👷‍♂️ will decide when to include it. We use the `OptimismPortal` for this. The events are not going to be processed immediately, to reduce the chances of reorgs.
 
 :::info What happen if the sequencer is down?
 Even when the sequencer is down; deposits are forced to be included “eventually”. Currently the force-deposit window is done after 12h.
