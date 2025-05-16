@@ -73,6 +73,30 @@ This means message passing in the Superchain is node-mediated. The EVM only enfo
 Interop only works if the node is configured to watch other chains, and knows how to validate their logs.
 The Identifier.timestamp is compared to the destination block’s timestamp during execution to ensure ordering is preserved. This prevents messages from being predeclared for future blocks or replayed in unintended contexts.
 
+## Relayers
+
+Relayers are offchain agents that facilitate message execution across chains. After a message is emitted on the source chain, a relayer:
+
+1. Monitors for new `SendMessage` logs.
+2. Extracts the message metadata (`Identifier`, `msgHash`, and payload).
+3. Builds a tx to `relayMessage()` on the destination chain, including the required access list.
+4. Pays gas on the destination to trigger execution.
+
+Relayers are permissionless, anyone can submit the executing message. In production, teams often run their own relayers or rely on shared infra like `autorelayer`. Relayer logic may be bundled into the same process as the sequencer.
+
+The protocol treats relayers as untrusted helpers, the message must still pass all invariant checks on-chain.
+
+### Who pays for gas?
+
+Cross-chain message execution happens in two phases. The sender pays gas to emit the message on the **source chain**, and a relayer pays gas to submit the execution on the **destination chain**.
+
+This means:
+- The source tx does **not** include gas for the destination.
+- If the destination chain is congested, it’s up to the relayer (or node operator) to decide when or whether to relay the message.
+- In production, relayers may be incentivized or subsidized. Protocols can also run their own relayers to guarantee liveness.
+
+Users should be aware that the relay may be delayed or dropped if destination gas costs are abnormally high.
+
 ## Access Lists
 
 Each executing message must be declared in a transaction’s access list. 
