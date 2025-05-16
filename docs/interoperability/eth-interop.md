@@ -62,7 +62,7 @@ Only the `SuperchainETHBridge` can call `burn()` and `mint()`:
 
 ETH is transferred using new `SafeSend{ value: amount }(to)`, a contract-based ETH send that disables fallback logic. This prevents reentrancy and unexpected side effects in recipient contracts.
 
-`new SafeSend{ value: _amount }(payable(_to))`: Unlike `call{value:}` or `transfer()`, SafeSend guarantees ETH delivery without executing recipient logic.
+`new SafeSend{ value: _amount }(payable(_to))`: Unlike `call{value:}` or `transfer()`, SafeSend guarantees ETH delivery without executing recipient logic through `selfdestruct`.
 
 ## Native ETH Supply Guarantee
 
@@ -79,4 +79,11 @@ This model avoids inflation and maintains total supply consistency across L1 and
 - `event LiquidityBurned(address indexed caller, uint256 value);`
 - `event LiquidityMinted(address indexed caller, uint256 value);`
 
-These events provide a verifiable record of the bridging lifecycle.
+These events provide a verifiable record of the ETH bridging lifecycle and occur in the following order:
+
+1. **`SendETH`** — emitted on the source chain when a user initiates the bridge by calling `sendETH`. This includes the destination chain and amount to be transferred.
+2. **`LiquidityBurned`** — emitted immediately after, when ETH is burned using `ETHLiquidity.burn()` on the source chain.
+3. **`RelayETH`** — emitted on the destination chain when the relayer successfully submits the executing message and `relayETH` is called.
+4. **`LiquidityMinted`** — emitted when ETH is minted and sent to the recipient using `ETHLiquidity.mint()` and `SafeSend`.
+
+Together, these logs form a complete audit trail across both chains for every ETH bridge transaction.

@@ -20,6 +20,21 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Interop',
+      items: [
+        'interoperability/overview',
+        'interoperability/intro-to-interop',
+        'interoperability/messaging-protocol',
+        'interoperability/token-interop',
+        'interoperability/eth-interop',
+        'interoperability/execution-and-sequencing',
+        'interoperability/verification-pipeline',
+        'interoperability/predeploys-reference',
+        'interoperability/bye',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Governance',
       items: [
         'governance/governance-overview',
@@ -43,21 +58,6 @@ const sidebars: SidebarsConfig = {
           ]
         },
         'governance/bye',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Interop',
-      items: [
-        'interoperability/overview',
-        'interoperability/intro-to-interop',
-        'interoperability/messaging-protocol',
-        'interoperability/token-interop',
-        'interoperability/eth-interop',
-        'interoperability/execution-and-sequencing',
-        'interoperability/verification-pipeline',
-        'interoperability/predeploys-reference',
-        'interoperability/bye',
       ],
     },
     {

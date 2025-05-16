@@ -8,7 +8,7 @@ sidebar_label: EVM vs OP
 Reference [here](https://docs.optimism.io/stack/differences) for a deep dive.
 :::
 
-Although the OP stack aims for EVM-equivalnece, there are a few differences we need to keep in mind.
+Although the OP stack aims for EVM-equivalence, there are a few differences we need to keep in mind.
 ## Bridging
 
 Of course, Ethereum doesn’t have the concept of deposit transactions, but in the OP stack (and every L2), we do. 
@@ -45,7 +45,7 @@ In principle, OP Stack tries to keep opcode behavior as 1:1 with Ethereum as pos
 This is *superduperimportant* for cross-chain transactions.
 :::
 
-In typical L1, an L1 and L2 contract can share the same address but have totallu different bytecode (i mean, they are separate chains, after all).
+In typical L1, an L1 and L2 contract can share the same address but have totally different bytecode (i mean, they are separate chains, after all).
 
 Without aliasing, an L1 contract might impersonate an L2 contract if they share an address. Basically, when an L1 smart contract sends a message into the L2, the sender on L2 doesn’t appear as the L1 contract’s real address. Instead, it’s `L1_contract_address + 0x1111000000000000000000000000000000001111`
 

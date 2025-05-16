@@ -8,7 +8,7 @@ sidebar_label: Governor Walkthrough
 
 The Optimism Governor is based on the OpenZeppelin’s Governor, customized to support Optimism’s governance needs: signaling proposals, customizable voting rules, subdelegations, and so on.
 
-On the long run anyone should be able to propose changes, but safeguards like delegate approvals, quorum thresholds, and timelocks are required to ensure quality and protect against manipulation.
+In the long run anyone should be able to propose changes, but safeguards like delegate approvals, quorum thresholds, and timelocks are required to ensure quality and protect against manipulation.
 
 Some useful resources: 
 
