@@ -63,7 +63,7 @@ Vetoes are a serious mechanism, reserved for malicious proposals or cases of gov
 | Protocol / Governor Upgrade | Token House | 2w review + 1w vote | 30% | 76% | Citizens' House |
 | Maintenance Upgrade | Both Houses | 1w optimistic vote | — | — | Both Houses (12%) |
 | Inflation Adjustment | Token House | 2w review + 1w vote | 30% | 76% | Citizens' House |
-| Director Removal | Token House | 2w review + 1w vote | 30% | 76% | — |
+| Director Removal (OP Foundation) | Token House | 2w review + 1w vote | 30% | 76% | — |
 | Treasury Appropriation | Token House | 2w review + 1w vote | 30% | 51% | — |
 | Rights Protections | Token House | 2w review + 1w vote | 30% | 51% | — |
 | Code of Conduct Violations | Either | 2w review + 1w optimistic vote | — | — | Corresponding House (12%) |
