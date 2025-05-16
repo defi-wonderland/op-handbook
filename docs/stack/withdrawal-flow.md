@@ -8,7 +8,7 @@ sidebar_label: Withdrawal Flow
 Find the full documentation [here](https://docs.optimism.io/stack/transactions/withdrawal-flow).
 :::
 
-Withdrawals start on the L2, and there are 4 key steps: initiate, prove, finilize and asset release. So, the user will initiate withdrawal when interacting with the `L2StandardBridge` , it will communicate with `L2CrossDomainMessenger` that will go to `L2ToL1MessagePasser` . The last one is the important piece, because it is this contract’s storage root that is used to proof the withdrawal on L1. The user, after initiating the withdrawal on L2, will need to prove the withdrawal on L1. They will call `prove_withdrawal` on OptimismPortal2, and after that, they will need to wait for the challenge period. Only after that, the transaction is finalized and the user gets their assets.
+Withdrawals start on the L2, and there are 4 key steps: initiate, prove, finalize and asset release. So, the user will initiate withdrawal when interacting with the `L2StandardBridge` , it will communicate with `L2CrossDomainMessenger` that will go to `L2ToL1MessagePasser` . The last one is the important piece, because it is this contract’s storage root that is used to proof the withdrawal on L1. The user, after initiating the withdrawal on L2, will need to prove the withdrawal on L1. They will call `prove_withdrawal` on OptimismPortal2, and after that, they will need to wait for the challenge period. Only after that, the transaction is finalized and the user gets their assets.
 
 ![withdrawal.png](img/withdrawal.png)
 
