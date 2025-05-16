@@ -99,6 +99,4 @@ You can think of a modular rollup as a distributed system of smaller parts:
 
 Each component can be upgraded, swapped out, or scaled independently. For example, you could use Ethereum for DA, but eventually move to a different DA provider. Or you might change your execution engine to support a different VM.
 
-In the OP Stack, these modular roles are implemented across a set of cooperating components, like `op-node`, `op-batcher`, and `op-geth`, that talk to each other through well-defined APIs.
-
-We’ll unpack each of these in the next section, but keep in mind: the modular model is what allows the OP Stack to evolve. It’s a design choice, not an implementation detail.
+If you’re wondering how these abstract layers map to real OP Stack components (`op-node`, `op-geth`, or `op-batcher`) don’t worry, that’s exactly what we’ll cover in the next section. We’ll walk through each layer and show how the software fits together to form the full system.
