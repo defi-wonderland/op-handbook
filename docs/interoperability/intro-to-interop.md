@@ -44,6 +44,10 @@ A message can only be consumed if it is valid. There are three invariants:
 - **Chain ID**: The source chain must be in the destination chain’s dependency set.
 - **Expiry**: The message must be consumed within a fixed time window after it is created. This window is currently set to 180 days.
 
+:::info 
+If this time window elapses, the message can be re-sent on origin to make it available using `L2ToL2CrossDomainMessenger#resendMessage`. 
+:::
+
 If any of these invariants fail, the executing message is invalid. Any block that includes it will be reorged.
 
 ## Dependency Set
