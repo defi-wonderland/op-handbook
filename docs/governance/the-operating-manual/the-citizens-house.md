@@ -81,7 +81,7 @@ A scalable and ethical identity layer is critical for:
 
 Citizenship design relies on integrating onchain identity, offchain reputation, and collective legitimacy.
 
-## Responsabilities 
+## Responsibilities 
 
 Citizens are expected to:
 	•	Vote thoughtfully in Retro Funding
