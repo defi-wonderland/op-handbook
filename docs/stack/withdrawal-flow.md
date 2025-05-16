@@ -22,7 +22,13 @@ So, the user will need to wait until the DP3, which actually includes its withdr
 
 Although the user initiates the withdrawal at L2 block 250, they cannot immediately prove it on L1. They must wait until a Dispute Proposal is published that covers L2 block 250. In this case, DP3 includes the state up to L2 block 300, which means it is the first DP that contains the withdrawal in its state root. This allows the user to construct a valid proof and initiate the dispute game on L1.
 
-But, how is security guaranteed? The dispute game mechanism involves disputes that contains claims about the L2 state. The claim rest upon the Output Root which contains the state root and the storage root. There are 2 components (onchain and offchain):
+### How is this enforced?
+
+When proving a withdrawal, the user supplies a Merkle proof showing that their message was recorded in the `L2ToL1MessagePasser` contract. This storage root is part of the output root posted to L1 (via the `Proposer`), and the `OptimismPortal.proveWithdrawalTransaction()` function verifies the inclusion.
+
+If the proof is valid and unchallenged during the dispute window, the withdrawal can be finalized. This ensures that L1 only processes withdrawals that were genuinely recorded in L2 state.
+
+You might be asking: how is security guaranteed? The dispute game mechanism involves disputes that contain claims about the L2 state. The claim rests upon the Output Root which contains the state root and the storage root. There are 2 components (onchain and offchain):
 
 ![onchain-offchain.png](img/onchain-offchain.png)
 

@@ -21,6 +21,12 @@ After waiting, it will pack the information into a transaction that will go to t
 
 ![deposit.png](img/deposit-flow.png)
 
+### How is inclusion enforced?
+
+The deposit is enforced by inclusion in a future L2 block as a special transaction. All L2 nodes, including honest verifiers, watch for L1 deposit events and reprocess them deterministically. If a sequencer ever fails to include a valid deposit, its blocks would be rejected by verifiers.
+
+That’s why the system guarantees that valid L1 deposits will eventually be processed, either voluntarily by the sequencer or forcibly after the timeout.
+
 :::info Reference
 For further reference about smart contracts see [L2BEAT OP Mainnet](https://l2beat.com/scaling/projects/op-mainnet#contracts)
 :::
