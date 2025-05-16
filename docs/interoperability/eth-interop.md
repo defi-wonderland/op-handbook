@@ -62,7 +62,7 @@ Only the `SuperchainETHBridge` can call `burn()` and `mint()`:
 
 ETH is transferred using new `SafeSend{ value: amount }(to)`, a contract-based ETH send that disables fallback logic. This prevents reentrancy and unexpected side effects in recipient contracts.
 
-`new SafeSend{ value: _amount }(payable(_to))`: Unlike `call{value:}` or `transfer()`, SafeSend guarantees ETH delivery without executing recipient logic.
+`new SafeSend{ value: _amount }(payable(_to))`: Unlike `call{value:}` or `transfer()`, SafeSend guarantees ETH delivery without executing recipient logic through `selfdestruct`.
 
 ## Native ETH Supply Guarantee
 
