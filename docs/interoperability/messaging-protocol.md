@@ -37,6 +37,19 @@ A message is valid only if the executing message references a valid initiating m
 
 If validation passes, the destination contract is called with the message payload. Otherwise, the transaction reverts.
 
+### Emission vs. Execution View
+
+Messages look different at emission and execution:
+
+- On the **SRC chain**, the `L2ToL2CrossDomainMessenger` emits a log containing the `msgHash`, target address, destination chain, and payload. This log is indexed and uniquely identified by a struct called `Identifier`.
+
+- On the **DST chain**, the transaction must include:
+  - The `Identifier` (chain ID, timestamp, log index, block number, origin)
+  - The `msgHash` (hash of the payload)
+  - A valid checksum in the access list
+
+These are validated by `CrossL2Inbox.validateMessage()` before the message can be executed.
+
 ## Messaging Invariants
 
 The protocol enforces the following rules:
@@ -48,7 +61,11 @@ If any invariant is violated, the message is invalid. The block containing it is
 
 ## Access Lists
 
-Each executing message must be declared in a transaction’s access list. The access list entry includes:
+Each executing message must be declared in a transaction’s access list. 
+:::tip What’s an access list?
+Access lists are part of the OP Stack’s message validation system. Each cross-chain message must be declared up front in a transaction’s access list so the block builder can verify its origin and integrity before including it in a block. This process is enforced outside the EVM using the `CrossL2Inbox`, and it ensures safety without slowing down execution.
+:::
+The access list entry includes:
 - **Type 1**: Lookup identity (chain ID, block number, timestamp, log index)
 - **Type 2** (optional): Chain ID extension for 256-bit chain IDs
 - **Type 3**: Checksum over the initiating message and metadata
@@ -56,12 +73,18 @@ Each executing message must be declared in a transaction’s access list. The ac
 The checksum is derived as:
 
 `logHash = keccak256(origin || msgHash)`
+
 `idPacked = timestamp || blockNumber || log index`
+
 `idLogHash = keccak256(logHash || idPacked)`
+
 `bareChecksum = keccak256(idLogHash || chainId)`
+
 `checksum = 0x03 || bareChecksum[1:]`
 
 If the checksum is present and valid, the `CrossL2Inbox` allows the message to execute.
+
+
 
 ## Message Payload
 
