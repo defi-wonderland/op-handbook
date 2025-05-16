@@ -37,6 +37,15 @@ A message is valid only if the executing message references a valid initiating m
 
 If validation passes, the destination contract is called with the message payload. Otherwise, the transaction reverts.
 
+## Messaging Invariants
+
+The protocol enforces the following rules:
+- **Chain ID Invariant**: The chainid in the Identifier must belong to the destination chain’s dependency set.
+- **Timestamp Invariant**: The initiating message’s timestamp must be less than or equal to the executing message’s timestamp. It must also be greater than the Interop upgrade timestamp.
+- **Expiry Invariant**: The executing message must be submitted within 180 days of the initiating message’s timestamp.
+
+If any invariant is violated, the message is invalid. The block containing it is reverted or replaced.
+
 ### Emission vs. Execution View
 
 Messages look different at emission and execution:
@@ -50,14 +59,18 @@ Messages look different at emission and execution:
 
 These are validated by `CrossL2Inbox.validateMessage()` before the message can be executed.
 
-## Messaging Invariants
+### How Interop actually happens: The node's role
 
-The protocol enforces the following rules:
-- **Chain ID Invariant**: The chainid in the Identifier must belong to the destination chain’s dependency set.
-- **Timestamp Invariant**: The initiating message’s timestamp must be less than or equal to the executing message’s timestamp. It must also be greater than the Interop upgrade timestamp.
-- **Expiry Invariant**: The executing message must be submitted within 180 days of the initiating message’s timestamp.
+In the OP Stack, interoperability is driven by nodes.
 
-If any invariant is violated, the message is invalid. The block containing it is reverted or replaced.
+When a message is emitted on a source chain:
+- The **relayer or sequencer node** watches for events from all chains in its dependency set.
+- It stores the message metadata off-chain, including the `Identifier` and `msgHash`.
+- When building a block on the destination chain, the node includes the message in a transaction’s **access list**, enabling `CrossL2Inbox` to validate it.
+
+This means message passing in the Superchain is node-mediated. The EVM only enforces **local validation**, but the cross-chain part is coordinated by the **consensus node software**.
+
+Interop only works if the node is configured to watch other chains, and knows how to validate their logs.
 
 ## Access Lists
 
