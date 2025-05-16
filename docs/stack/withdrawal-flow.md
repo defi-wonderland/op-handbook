@@ -20,6 +20,8 @@ Let’s assume that 1 hour = 100 blocks. The timeline would be:
 
 So, the user will need to wait until the DP3, which actually includes its withdrawal. The reason that this is 1 hour is that the proposer has the responsibility of create the dispute game every hour. So, users can conveniently reference the dispute game that were created by the proposer when they want to prove their withdrawal. 
 
+Although the user initiates the withdrawal at L2 block 250, they cannot immediately prove it on L1. They must wait until a Dispute Proposal is published that covers L2 block 250. In this case, DP3 includes the state up to L2 block 300, which means it is the first DP that contains the withdrawal in its state root. This allows the user to construct a valid proof and initiate the dispute game on L1.
+
 But, how is security guaranteed? The dispute game mechanism involves disputes that contains claims about the L2 state. The claim rest upon the Output Root which contains the state root and the storage root. There are 2 components (onchain and offchain):
 
 ![onchain-offchain.png](img/onchain-offchain.png)
