@@ -6,7 +6,7 @@ sidebar_label: Interop in a Nutshell
 
 The Superchain is a set of OP Stack chains that can communicate with each other. Interoperability is the ability of one chain to read and act on messages from another chain.
 
-In OP, interop is built into the protocol. Chains should be able to emit logs, call initiating messages, and other chains should be able to consume them as inputs to their own transactions. **This does not require routing through Ethereum L1.**
+In the OP stack, interop is built into the protocol. Chains should be able to emit logs, call initiating messages, and other chains should be able to consume them as inputs to their own transactions. **This does not require routing through Ethereum L1.**
 
 The goal of native interop is to reduce latency. Instead of waiting for a message to be posted and finalized on L1, chains can interact directly. This enables fast, low-cost messaging and allows applications to coordinate across chains in near real-time.
 
