@@ -35,20 +35,6 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Processes',
-      items: [
-        'processes/overview',
-        'processes/design',
-        'processes/spec',
-        'processes/implementation',
-        'processes/fma',
-        'processes/projects',
-        'processes/coding',
-        'processes/challenge',
-      ],
-    },
-    {
-      type: 'category',
       label: 'Governance',
       items: [
         'governance/governance-overview',
@@ -72,6 +58,20 @@ const sidebars: SidebarsConfig = {
           ]
         },
         'governance/bye',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Processes',
+      items: [
+        'processes/overview',
+        'processes/design',
+        'processes/spec',
+        'processes/implementation',
+        'processes/fma',
+        'processes/projects',
+        'processes/coding',
+        'processes/challenge',
       ],
     },
   ],
