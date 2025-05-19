@@ -64,7 +64,7 @@ Mintable tokens can be converted to their `SuperchainERC20` representation by ca
 This bridge (0x4200...010) supports migration of tokens from legacy `MintableERC20` format to the new interop-compatible standard. The convert function takes a from and to token address and an amount, verifies that the two tokens are a valid pair (same decimals, same remote token, one legacy and one superchain), and then burns amount from the legacy token and mints the same amount in the `SuperchainERC20`. The Converted event is emitted upon success.
 
 :::warning
-The following predeploys won't be available in the first Interop Mainnet iteration, but should be in the future.
+This predeploy is already available, but the *interop compatible* version won't be available on the first iteration of it.
 :::
 
 This flow allows existing applications using `L1 <-> L2` assets to smoothly transition to Superchain-native interop standards.
