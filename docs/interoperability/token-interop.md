@@ -149,9 +149,9 @@ Rate limiting is **not part of the default OP Stack bridge**. It is a feature of
 
 The Superchain also supports a hybrid token implementation, the [`CrosschainERC20`](https://github.com/defi-wonderland/crosschainERC20/blob/dev/README.md), that combines both [ERC-7281](https://ethereum-magicians.org/t/erc-7281-sovereign-bridged-tokens/14979) and [ERC-7802](https://eips.ethereum.org/EIPS/eip-7802). This allows us to think about compatibility with xERC20-style bridges and the Superchain’s native interop model in a single token contract. So that devs can deploy new tokens or adapt existing ones using the provided factory, lockbox, and adapter contracts, while maintaining deterministic addresses across chains.
 
-## What about NFTs?
-
-ERC-721 bridging from L1 to L2 is still handled using the traditional `L1StandardBridge` and `L2StandardBridge` contracts. These follow the classic Merkle-proof model and are not yet supported by native interop. NFT support in the Superchain interop model is a potential future extension.
+:::tip What about NFTs?
+ERC-721 bridging from L1 to L2 is still handled using the [`L1ERC721Bridge`](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts-bedrock/src/L1/L1ERC721Bridge.sol) contract.
+:::
 
 ## TL;DR
 
