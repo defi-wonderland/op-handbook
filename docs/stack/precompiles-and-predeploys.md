@@ -33,7 +33,7 @@ Every time an L2 user on an OP Stack chain wants to send messages or withdraw fu
     
     Let’s say that Joxes starts on L2 but needs up-to-date L1 data to verify a claim or timestamp in his contract.
     
-    For doing that, Jox will call the `L1Block` contract on L2 and this predeploy will be the *source of truth* on L2 for L1 block info. Behind the scenes, the sequencer periodically upadtes L1Block, and Joxes’s contract can then read the `blockNumber()` , timestamps, etc. 
+    For doing that, Jox will call the `L1Block` contract on L2 and this predeploy will be the *source of truth* on L2 for L1 block info. Behind the scenes, the sequencer periodically updates L1Block, and Joxes’s contract can then read the `blockNumber()` , timestamps, etc. 
     
     ![joxes-1.png](img/joxes-1.png)
     
@@ -76,7 +76,5 @@ Without the `L2ToL1MessagePasser`’s record, there’s no evidence on L2 that J
 :::
 
 :::info reference
-For reference on predeploys, go [here](https://specs.optimism.io/protocol/predeploys.html)
-
-![predeploys.png](img/predeploys.png)
+For a reference on predeploys, go [here](https://specs.optimism.io/protocol/predeploys.html)
 :::

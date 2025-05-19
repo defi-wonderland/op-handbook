@@ -34,6 +34,8 @@ The process is secured by the OP Stack’s messaging protocol and enforced at th
 | `L2ToL2CrossDomainMessenger` | Message transport layer. |
 | `CrossL2Inbox` | Verifies message validity. |
 
+Although both `CrossL2Inbox` and `SuperchainTokenBridge` include safety checks and caller validation, they serve different roles. `CrossL2Inbox` enforces message origin validity, while `SuperchainTokenBridge` governs token movement and supply control. Their separation aligns with the modular OP Stack architecture.
+
 ## SuperchainERC20
 
 This is an ERC-20 that implements [ERC-7802](https://eips.ethereum.org/EIPS/eip-7802). It exposes two core methods:
@@ -113,6 +115,26 @@ These properties are enforced by the system:
 - Determinism: The token must live at the same address on all chains.
 - Unique messaging path: All transfers use `L2ToL2CrossDomainMessenger`.
 
+:::tip Can token supply change across chains?
+The default Superchain bridge model enforces supply conservation: tokens must be burned on the source chain before being minted on the destination. However, custom bridges could intentionally mint or burn in specific cases (e.g. rewards or governance). These are not part of the standard `SuperchainTokenBridge` flow.
+:::
+
+## Rate Limiting
+
+The standard `SuperchainTokenBridge` contract **does not enforce rate limits**. It assumes that safety and volume controls are handled by governance, economic incentives, or wrapper contracts.
+
+However, some production deployments, like [`CrosschainERC20`](https://github.com/defi-wonderland/crosschainERC20), add **optional rate-limiting logic** as an extension. This implementation restricts the amount of tokens that can be transferred across chains within a fixed time window, mitigating the risk of sudden outflows due to bridge exploits or economic shocks.
+
+These limits are enforced:
+- **Per token**, per bridge instance
+- **Per time window**, measured in L2 blocks
+
+This design does not restrict *who* can bridge, only *how much* can be bridged in a given period.
+
+:::info
+Rate limiting is **not part of the default OP Stack bridge**. It is a feature of extended token implementations like `CrosschainERC20`.
+:::
+
 ## Comparison: `SuperchainERC20` vs `xERC20`
 
 | Feature | SuperchainERC20 | xERC20 (ERC-7281) |
@@ -121,12 +143,15 @@ These properties are enforced by the system:
 | Addressing | Same address on all chains | Flexible, but requires a registry |
 | Permissions | Fixed bridge (SuperchainTokenBridge) | Configurable per bridge |
 | Rate limiting | None in v1 | Native |
-| Replay protection | Built-in via L2 messaging | Optional |
+| Replay protection | Re-relaying the message on the `L2ToL2CrossDomainMessenger` | Optional |
 
 `xERC20` offers more flexibility, but introduces a “weakest link” risk when multiple bridges are authorized. `SuperchainERC20` favors simplicity and safety, and they are compatible. 
 
 The Superchain also supports a hybrid token implementation, the [`CrosschainERC20`](https://github.com/defi-wonderland/crosschainERC20/blob/dev/README.md), that combines both [ERC-7281](https://ethereum-magicians.org/t/erc-7281-sovereign-bridged-tokens/14979) and [ERC-7802](https://eips.ethereum.org/EIPS/eip-7802). This allows us to think about compatibility with xERC20-style bridges and the Superchain’s native interop model in a single token contract. So that devs can deploy new tokens or adapt existing ones using the provided factory, lockbox, and adapter contracts, while maintaining deterministic addresses across chains.
 
+:::tip What about NFTs?
+ERC-721 bridging from L1 to L2 is still handled using the [`L1ERC721Bridge`](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts-bedrock/src/L1/L1ERC721Bridge.sol) contract.
+:::
 
 ## TL;DR
 

@@ -8,7 +8,7 @@ sidebar_label: Withdrawal Flow
 Find the full documentation [here](https://docs.optimism.io/stack/transactions/withdrawal-flow).
 :::
 
-Withdrawals start on the L2, and there are 4 key steps: initiate, prove, finilize and asset release. So, the user will initiate withdrawal when interacting with the `L2StandardBridge` , it will communicate with `L2CrossDomainMessenger` that will go to `L2ToL1MessagePasser` . The last one is the important piece, because it is this contract’s storage root that is used to proof the withdrawal on L1. The user, after initiating the withdrawal on L2, will need to prove the withdrawal on L1. They will call prove_withdrawal on OptimismPortal2, and after that, they will need to wait for the challenge period. Only after that, the transaction is finalized and the user gets their assets.
+Withdrawals start on the L2, and there are 4 key steps: initiate, prove, finalize and asset release. So, the user will initiate withdrawal when interacting with the `L2StandardBridge` , it will communicate with `L2CrossDomainMessenger` that will go to `L2ToL1MessagePasser` . The last one is the important piece, because it is this contract’s storage root that is used to prove the withdrawal on L1. The user, after initiating the withdrawal on L2, will need to prove the withdrawal on L1. They will call `prove_withdrawal` on OptimismPortal2, and after that, they will need to wait for the challenge period. Only after that, the transaction is finalized and the user gets their assets.
 
 ![withdrawal.png](img/withdrawal.png)
 
@@ -18,9 +18,17 @@ Let’s assume that 1 hour = 100 blocks. The timeline would be:
 
 ![timeline.png](img/timeline-withdrawal.png)
 
-So, the user will need to wait until the DP3, which actually includes its withdrawal. The reason that this is 1 hour is that the proposer has the responsability of create the dispute game every hour. So, users can conveniently reference the dispute game that were created by the proposer when they want to prove their withdrawal. 
+So, the user will need to wait until the DP3, which actually includes its withdrawal. The reason that this is 1 hour is that the proposer has the responsibility of create the dispute game every hour. So, users can conveniently reference the dispute game that were created by the proposer when they want to prove their withdrawal. 
 
-But, how is security guaranteed? The dispute game mechanism involves disputes that contains claims about the L2 state. The claim rest upon the Output Root which contains the state root and the storage root. There are 2 components (onchain and offchain):
+Although the user initiates the withdrawal at L2 block 250, they cannot immediately prove it on L1. They must wait until a Dispute Proposal is published that covers L2 block 250. In this case, DP3 includes the state up to L2 block 300, which means it is the first DP that contains the withdrawal in its state root. This allows the user to construct a valid proof and initiate the dispute game on L1.
+
+### How is this enforced?
+
+When proving a withdrawal, the user supplies a Merkle proof showing that their message was recorded in the `L2ToL1MessagePasser` contract. This storage root is part of the output root posted to L1 (via the `Proposer`), and the `OptimismPortal.proveWithdrawalTransaction()` function verifies the inclusion.
+
+If the proof is valid and unchallenged during the dispute window, the withdrawal can be finalized. This ensures that L1 only processes withdrawals that were genuinely recorded in L2 state.
+
+You might be asking: how is security guaranteed? The dispute game mechanism involves disputes that contain claims about the L2 state. The claim rests upon the Output Root which contains the state root and the storage root. There are 2 components (onchain and offchain):
 
 ![onchain-offchain.png](img/onchain-offchain.png)
 

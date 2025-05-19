@@ -12,7 +12,7 @@ The OP Stack introduces a set of system-level contracts, or predeploys, that are
 
 ## `CrossL2Inbox`
 
-`CrossL2Inbox` (0x4200...022) is the contract responsible for validating messages on the destination chain. Any user or contract can call it to confirm that a message emitted on a source chain is valid, meets all protocol invariants, and was explicitly declared in the access list.
+`CrossL2Inbox` (0x420...022) is the contract responsible for validating messages on the destination chain. Any user or contract can call it to confirm that a message emitted on a source chain is valid, meets all protocol invariants, and was explicitly declared in the access list.
 
 Message validation is done by calling `validateMessage`, which takes an `Identifier` struct and the `keccak256` hash of the payload. If the message is valid, the contract emits the ExecutingMessage event, which acts as proof of execution. This pattern lets smart contracts verify events from other chains in a trust-minimized way.
 
@@ -62,5 +62,9 @@ Mintable tokens can be converted to their `SuperchainERC20` representation by ca
 ## `L2StandardBridge`
 
 This bridge (0x4200...010) supports migration of tokens from legacy `MintableERC20` format to the new interop-compatible standard. The convert function takes a from and to token address and an amount, verifies that the two tokens are a valid pair (same decimals, same remote token, one legacy and one superchain), and then burns amount from the legacy token and mints the same amount in the `SuperchainERC20`. The Converted event is emitted upon success.
+
+:::warning
+This predeploy is already available, but the *interop compatible* version won't be available on the first iteration of it.
+:::
 
 This flow allows existing applications using `L1 <-> L2` assets to smoothly transition to Superchain-native interop standards.
