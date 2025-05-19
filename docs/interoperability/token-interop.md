@@ -121,22 +121,18 @@ The default Superchain bridge model enforces supply conservation: tokens must be
 
 ## Rate Limiting
 
-Each `SuperchainTokenBridge` contract enforces a **rate limit** for every bridged token. This mechanism limits the volume of assets that can be transferred across chains over time, helping mitigate systemic risk from bridge exploits or liquidity shocks.
+The standard `SuperchainTokenBridge` contract **does not enforce rate limits**. It assumes that safety and volume controls are handled by governance, economic incentives, or wrapper contracts.
 
-Rate limits are enforced:
-- **Per token**, per bridge
+However, some production deployments, like [`CrosschainERC20`](https://github.com/defi-wonderland/crosschainERC20), add **optional rate-limiting logic** as an extension. This implementation restricts the amount of tokens that can be transferred across chains within a fixed time window, mitigating the risk of sudden outflows due to bridge exploits or economic shocks.
+
+These limits are enforced:
+- **Per token**, per bridge instance
 - **Per time window**, measured in L2 blocks
 
-If the outbound volume exceeds the allowed limit within the window, additional transfers will be rejected until the limit resets.
+This design does not restrict *who* can bridge, only *how much* can be bridged in a given period.
 
-This applies to both:
-- **ETH transfers** using native ETH bridging
-- **ERC-20 transfers** using `SuperchainERC20`
-
-Rate limiting is implemented at the contract level and is designed to prevent sudden outflows of assets due to relayer misbehavior, compromised chains, or unexpected economic shocks.
-
-:::tip Not the same as whitelisting
-Rate limiting does not restrict *who* can use a bridge or *which contracts* are allowed. It only limits *how much* of a given token can be transferred in a given period.
+:::info
+Rate limiting is **not part of the default OP Stack bridge**. It is a feature of extended token implementations like `CrosschainERC20`.
 :::
 
 ## Comparison: `SuperchainERC20` vs `xERC20`
