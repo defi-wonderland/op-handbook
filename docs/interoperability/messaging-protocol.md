@@ -103,6 +103,8 @@ Each executing message must be declared in a transaction’s access list.
 
 :::tip What’s an access list?
 Access lists are part of the OP Stack’s message validation system. Each cross-chain message must be declared up front in a transaction’s access list so the block builder can verify its origin and integrity before including it in a block. This process is enforced outside the EVM using the `CrossL2Inbox`, and it ensures safety without slowing down execution.
+
+For reference in Ethereum, check the [EIP-2930](https://eips.ethereum.org/EIPS/eip-2930)
 :::
 
 The access list entry includes:
