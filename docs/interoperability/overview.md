@@ -19,7 +19,7 @@ Finally, we’ll walk through the verification and sequencing pipeline: how bloc
 By the end of this section, you should be able to answer:
 - What makes a cross-chain message valid?
 - How do OP Chains send and execute messages without relying on Ethereum L1?
-- What are the roles of CrossL2Inbox and L2ToL2CrossDomainMessenger?
+- What are the roles of `CrossL2Inbox` and `L2ToL2CrossDomainMessenger`?
 - How do tokens and ETH move between chains using the Superchain bridges?
 - What does the dependency set enforce, and how do chains define trust boundaries?
 - What is the difference between unsafe, cross-unsafe, safe, and finalized blocks?
