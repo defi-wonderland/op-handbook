@@ -1,7 +1,7 @@
 ---
 id: evm-vs-op
-title: EVM vs OP 
-sidebar_label: EVM vs OP
+title: Ethereum vs OP Stack
+sidebar_label: Ethereum vs OP Stack
 ---
 
 :::info Reference
@@ -68,7 +68,9 @@ A **sender mismatch issue** will happen when a contract expects a specific addre
 
 As you know, in Ethereum you pay only for execution gas. On a OP chain you will pay (1) the execution gas + (2) the L1 data fee for storing your transaction data. 
 
-Also, the OP stack implements the [EIP-1559](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md), which allows a base fee mechanism, but the parameters can differ across chains. 
+The OP stack implements the [EIP-1559](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md), which allows a base fee mechanism, but the parameters can differ across chains, so base fees change may behave differently (increase or decrease at different levels and velocity).
+
+Keep in mind that, although execution gas behaves exactly as on Ethereum, where you set max fee per gas, and those values determine whether your transaction is accepted and how much you pay, the L1 data fee is not user-configurable. That fee is computed automatically from the calldata that must be posted to L1 and is deducted from `tx.origin` balance at the exact price recorded in the L2 block where the transaction lands.
 
 :::important
 Here we should take a look at the chain-specific configs.
