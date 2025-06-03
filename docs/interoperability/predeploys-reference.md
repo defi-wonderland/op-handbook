@@ -27,7 +27,7 @@ Because access lists are not available in deposit transactions, `CrossL2Inbox` c
 
 This contract is the standard interface for applications and bridges to send and receive messages. It wraps the `CrossL2Inbox` (0x4200...023) functionality with replay protection and domain binding, enforcing one-time execution on the correct destination chain.
 
-Apps initiate messages using sendMessage, which accepts a destination chain ID, a target address on that chain, and the payload. The contract emits a `SentMessage` event containing the message metadata, and stores the message hash to prevent duplication. On the destination chain, the message is relayed with `relayMessage`, which calls `validateMessage`, verifies correctness, and executes the payload on the target contract. The `relayMessage` function also emits a `RelayedMessage` event including the return data hash, which downstream consumers can use for additional verification.
+Apps initiate messages using `sendMessage`, which accepts a destination chain ID, a target address on that chain, and the payload. The contract emits a `SentMessage` event containing the message metadata, and stores the message hash to prevent duplication. On the destination chain, the message is relayed with `relayMessage`, which calls `validateMessage`, verifies correctness, and executes the payload on the target contract. The `relayMessage` function also emits a `RelayedMessage` event including the return data hash, which downstream consumers can use for additional verification.
 
 This contract is used internally by Superchain bridges and token standards, and developers are encouraged to use it as their default messaging interface.
 
@@ -61,7 +61,7 @@ Mintable tokens can be converted to their `SuperchainERC20` representation by ca
 
 ## `L2StandardBridge`
 
-This bridge (0x4200...010) supports migration of tokens from legacy `MintableERC20` format to the new interop-compatible standard. The convert function takes a from and to token address and an amount, verifies that the two tokens are a valid pair (same decimals, same remote token, one legacy and one superchain), and then burns amount from the legacy token and mints the same amount in the `SuperchainERC20`. The Converted event is emitted upon success.
+This bridge (0x4200...010) supports migration of tokens that follows the legacy `OptimismMintableERC20` format to the new interop-compatible standard. The convert function takes a from and to token address and an amount, verifies that the two tokens are a valid pair (same decimals, same remote token, one legacy and one superchain), and then burns amount from the legacy token and mints the same amount in the `SuperchainERC20`. The Converted event is emitted upon success.
 
 :::warning
 This predeploy is already available, but the *interop compatible* version won't be available on the first iteration of it.
