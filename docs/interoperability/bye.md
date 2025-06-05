@@ -67,7 +67,7 @@ Messages from unsafe blocks might later be invalidated during reorgs. Including 
 <summary>Why is ETH never minted directly in the Superchain?</summary>
 
 
-All ETH originates from L1 and must be conserved. ETH is “burned” on the source chain via `ETHLiquidity.burn()` and “minted” on the destination chain via mint(), but this is really just moving pre-allocated liquidity.
+All ETH originates from L1 and must be conserved. ETH is “burned” on the source chain via `ETHLiquidity.burn()` and “minted” on the destination chain via `ETHLiquidity.mint()`, but this is really just moving pre-allocated liquidity.
 
 </details>
 

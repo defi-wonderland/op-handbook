@@ -35,7 +35,7 @@ This means that the commitment isn’t just a snapshot of the current state, it�
 The commitment becomes trustworthy if:
 - The DA layer contains the data needed to reconstruct the transition
 - The derivation function is deterministic and publicly executable
-- The fraud proof system allows anyone to dispute invalid transitions
+- The fraud proof system allows anyone to dispute an invalid state
 
 Ultimately, what we trust is the process that *led to the commitment*, not just the commitment itself.
 
@@ -56,7 +56,7 @@ If instead the rollup uses an external service like Celestia or EigenDA, it’s 
 The *real question* is: can you reconstruct the state if you're not the sequencer?
 
 :::tip What is a sequencer?
-A **sequencer** is the component responsible for ordering and executing transactions on the L2. In the OP Stack, it runs both `op-node` and `op-geth`. It builds blocks, runs the EVM, and sends the resulting state commitments and transaction data to Ethereum. 
+A **sequencer** is the component responsible for ordering and executing transactions on the L2. In the OP Stack, it runs both `op-node` and `op-geth`. It builds blocks, runs the EVM, and sends the resulting transaction data and state commitments to Ethereum. 
 :::
 
 Rollups are only meaningfully decentralized if *anyone* can recompute and verify the current state. DA makes that possible.
@@ -65,9 +65,9 @@ Rollups are only meaningfully decentralized if *anyone* can recompute and verify
 
 When people say “the rollup has a single sequencer”, they mean there's one entity authorized to produce new L2 blocks. That entity runs a stack including `op-node`, `op-geth`, `op-batcher`, and `op-proposer`. It’s not just one machine, but one authorized operator with the exclusive right to publish canonical L2 blocks.
 
-However, anyone can run their own full node or verifier. These nodes re-derive the chain from public data, validate the sequencer's work, and can challenge incorrect output proposals in systems with permissionless fault proofs.
+However, anyone can run their own full node or verifier. These nodes re-derive the chain from public data, validate the sequencer's work, and can also propose or challenge output proposals in systems with permissionless fault proofs.
 
-Sequencer decentralization is a future goal of the OP Stack. The current design keeps it centralized for simplicity and stability, but the architecture is modular enough to support decentralized sequencing via elections or shared slots.
+Sequencer decentralization is a future goal of the OP Stack. The current design keeps it centralized for simplicity and stability, but the architecture is modular enough to enable distributed block production and signing (e.g., via elections or shared slots).
 
 ## Reorgs
 

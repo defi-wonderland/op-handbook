@@ -16,15 +16,14 @@ A block is valid only if all executing messages in it are valid. To check validi
 	1.	Executes the transaction locally.
 	2.	Extracts logs and checks if any are executing messages.
 	3.	For each executing message, fetches the initiating log from the source chain using the message Identifier.
+ 	4.	Validates: 
+  		- Origin address matches.
+		- Log index, block number, and timestamp are consistent.
+		- Log hash matches the expected msgHash.
 	
 	:::note Where is the Identifier stored?
 	Identifiers are used off-chain by sequencers and relayers. They reference logs emitted on a source chain and are included in the transaction’s access list on the destination chain for validation.
 	:::
-
-	4.	Validates:
-	•	Origin address matches.
-	•	Log index, block number, and timestamp are consistent.
-	•	Log hash matches the expected msgHash.
 
 This can be done via a trusted RPC or by requiring cryptographic proof. If any message is invalid, the block must not be included.
 
@@ -55,8 +54,9 @@ This allows for different tradeoffs between liveness and finality, depending on 
 ## Supervisor: Tracking Cross-Chain Safety
 
 The Supervisor tracks all chains in a cluster and their message states. It provides APIs to:
-	•	Check if an executing message exists and meets a minimum safety level.
-	•	Get the global superRoot at a timestamp, which includes the output roots of all chains.
+
+- Check if an executing message exists and meets a minimum safety level.
+- Get the global superRoot at a timestamp, which includes the output roots of all chains.
 
 A sample `supervisor_checkAccessList` call checks if the message access list meets a safety threshold:
 ```json

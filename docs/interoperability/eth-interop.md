@@ -41,11 +41,11 @@ The `SuperchainETHBridge` contract is the main interface for cross-chain ETH tra
     - Can only be called by `L2ToL2CrossDomainMessenger`
     - Verifies the message sender is the remote `SuperchainETHBridge`
     - Calls `ETHLiquidity.mint(_amount)`
-    - Uses `SafeSend{value: amount}` to force-send ETH to _to
+    - Uses `SafeSend{value: amount}` to force-send ETH to `_to`
     - Emits `RelayETH(from, to, amount, source)`
 
 We have a few security invariants that are:
-- Only authorized messenger can call relayETH
+- Only authorized messenger can call `relayETH`
 - ETH must be burned on source before being minted on destination
 - ETH cannot be sent to the zero address
 
@@ -55,8 +55,8 @@ The `ETHLiquidity` contract is a pre-funded mint/burn vault. It starts with a vi
 
 Only the `SuperchainETHBridge` can call `burn()` and `mint()`:
 
-- `function burn() external payable`: Locks ETH into the contract. Emits LiquidityBurned(caller, value).
-- `function mint(uint256 _amount) external`: Sends ETH to the caller via SafeSend. Emits `LiquidityMinted(caller, amount)`.
+- `function burn() external payable`: Locks ETH into the contract. Emits `LiquidityBurned(caller, value)`.
+- `function mint(uint256 _amount) external`: Sends ETH to the caller via `SafeSend`. Emits `LiquidityMinted(caller, amount)`.
 
 ## Forced Transfers with SafeSend
 
@@ -66,11 +66,12 @@ ETH is transferred using new `SafeSend{ value: amount }(to)`, a contract-based E
 
 ## Native ETH Supply Guarantee
 
-ETH in circulation across the Superchain is always backed by ETH locked in L1. The lockbox contract on L1 enforces mint/burn constraints:
+ETH in circulation across the Superchain is always backed by ETH locked in L1. The [`ETHLockbox`](https://specs.optimism.io/interop/eth-lockbox.html) contract on L1 unifies the ETH liquidity across the Superchain:
+
 - Minting ETH on L2 requires ETH to be locked on L1
 - ETH is burned on L2 before being released from the lockbox
 
-This model avoids inflation and maintains total supply consistency across L1 and L2.
+All together makes possible to avoid inflation and maintains total supply consistency across L1 and L2s.
 
 ## Events
 

@@ -55,7 +55,7 @@ function crosschainBurn(address from, uint256 amount) external {
 }
 ```
 
-The token must also be deployed at the same address on every OP Chain where it will be bridged. This can be done using `CREATE2` or the `OptimismSuperchainERC20Factory`.
+The token must also be deployed at the same address on every OP Chain where it will be bridged. This can be achieved using `CREATE2` independently or through token factories designed for this purpose, such as the `OptimismSuperchainERC20Factory`.
 
 ## Bridging Workflow
 
@@ -87,7 +87,7 @@ function sendERC20(address token, address to, uint256 amount, uint256 chainId)
 }
 ```
 
-This function burns the tokens, crafts a message to relayERC20, and passes it through the cross-chain messenger.
+This function burns the tokens, crafts a message to `relayERC20`, and passes it through the cross-chain messenger.
 
 ### `relayERC20`
 ```solidity
@@ -116,8 +116,7 @@ These properties are enforced by the system:
 - Unique messaging path: All transfers use `L2ToL2CrossDomainMessenger`.
 
 :::tip Can token supply change across chains?
-The default Superchain bridge model enforces supply conservation: tokens must be burned on the source chain before being minted on the destination. However, custom bridges could intentionally mint or burn in specific cases (e.g. rewards or governance). These are not part of the standard `SuperchainTokenBridge` flow.
-:::
+The default Superchain bridge model enforces supply conservation: tokens must be burned on the source chain before being minted on the destination. However, minting and burning for other purposes, such as rewards, governance, or protocol-specific logic, may occur outside the standard `SuperchainTokenBridge` flow
 
 ## Rate Limiting
 
@@ -141,9 +140,9 @@ Rate limiting is **not part of the default OP Stack bridge**. It is a feature of
 | --- | --- | --- |
 | Trust model | OP Stack governance + fault proofs | Custom allowlist of bridges |
 | Addressing | Same address on all chains | Flexible, but requires a registry |
-| Permissions | Fixed bridge (SuperchainTokenBridge) | Configurable per bridge |
+| Permissions | Fixed bridge (`SuperchainTokenBridge`) | Configurable per bridge |
 | Rate limiting | None in v1 | Native |
-| Replay protection | Re-relaying the message on the `L2ToL2CrossDomainMessenger` | Optional |
+| Reception guarantees | Message retries through `L2ToL2CrossDomainMessenger` | Depends on the bridge |
 
 `xERC20` offers more flexibility, but introduces a “weakest link” risk when multiple bridges are authorized. `SuperchainERC20` favors simplicity and safety, and they are compatible. 
 
