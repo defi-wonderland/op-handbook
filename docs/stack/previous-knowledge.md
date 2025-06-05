@@ -65,7 +65,7 @@ Rollups are only meaningfully decentralized if *anyone* can recompute and verify
 
 When people say “the rollup has a single sequencer”, they mean there's one entity authorized to produce new L2 blocks. That entity runs a stack including `op-node`, `op-geth`, `op-batcher`, and `op-proposer`. It’s not just one machine, but one authorized operator with the exclusive right to publish canonical L2 blocks.
 
-However, anyone can run their own full node or verifier. These nodes re-derive the chain from public data, validate the sequencer's work, and can also publish or challenge output proposals in systems with permissionless fault proofs.
+However, anyone can run their own full node or verifier. These nodes re-derive the chain from public data, validate the sequencer's work, and can also propose or challenge output proposals in systems with permissionless fault proofs.
 
 Sequencer decentralization is a future goal of the OP Stack. The current design keeps it centralized for simplicity and stability, but the architecture is modular enough to enables distributed block production (e.g., via elections or shared slots).
 
