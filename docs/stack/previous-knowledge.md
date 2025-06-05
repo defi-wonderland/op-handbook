@@ -67,7 +67,7 @@ When people say “the rollup has a single sequencer”, they mean there's one e
 
 However, anyone can run their own full node or verifier. These nodes re-derive the chain from public data, validate the sequencer's work, and can also propose or challenge output proposals in systems with permissionless fault proofs.
 
-Sequencer decentralization is a future goal of the OP Stack. The current design keeps it centralized for simplicity and stability, but the architecture is modular enough to enables distributed block production (e.g., via elections or shared slots).
+Sequencer decentralization is a future goal of the OP Stack. The current design keeps it centralized for simplicity and stability, but the architecture is modular enough to enable distributed block production and signing (e.g., via elections or shared slots).
 
 ## Reorgs
 
